@@ -4,6 +4,8 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 
+const DEFAULT_GROQ_MODEL = process.env.GROQ_MODEL || 'qwen/qwen3.8-27b';
+
 // Lazy GROQ client — only initialized when first used
 let groqClient = null;
 const getGroq = () => {
@@ -13,6 +15,8 @@ const getGroq = () => {
   }
   return groqClient;
 };
+
+const getGroqModel = () => process.env.GROQ_MODEL || DEFAULT_GROQ_MODEL;
 
 // File upload config
 const storage = multer.diskStorage({
@@ -37,7 +41,7 @@ Always recommend consulting a doctor for serious concerns. Be compassionate and 
       { role: 'user', content: message }
     ];
     const completion = await getGroq().chat.completions.create({
-      model: 'llama-3.3-70b-versatile',
+      model: getGroqModel(),
       messages: [{ role: 'system', content: systemPrompt }, ...messages],
       max_tokens: 1000, temperature: 0.7
     });
@@ -62,7 +66,7 @@ Return exactly this structure:
 {"medications":[{"name":"","dosage":"","frequency":"","duration":"","instructions":""}],"diagnoses":[""],"labValues":[{"test":"","value":"","unit":"","normalRange":"","status":"normal"}],"restrictions":[""],"followUpInstructions":[""],"summary":"Plain language summary for patient"}`;
 
     const completion = await getGroq().chat.completions.create({
-      model: 'llama-3.3-70b-versatile',
+      model: getGroqModel(),
       messages: [{ role: 'system', content: 'You are a medical report analyzer. Return only valid JSON.' }, { role: 'user', content: prompt }],
       max_tokens: 2000, temperature: 0.2
     });
@@ -104,7 +108,7 @@ Return JSON only:
 {"suggestions":[{"category":"activity","title":"","description":"","priority":"medium"}],"motivationalMessage":""}`;
 
     const completion = await getGroq().chat.completions.create({
-      model: 'llama-3.3-70b-versatile',
+      model: getGroqModel(),
       messages: [{ role: 'system', content: 'Recovery specialist. Return valid JSON only.' }, { role: 'user', content: prompt }],
       max_tokens: 1000, temperature: 0.5
     });
@@ -129,7 +133,7 @@ exports.getHealthInsights = async (req, res) => {
 
     const logSummary = recentLogs.map(l => ({ date: l.timestamp, heartRate: l.vitals?.heartRate, o2: l.vitals?.oxygenSaturation, pain: l.painLevel, mood: l.mood, sleep: l.sleepHours }));
     const completion = await getGroq().chat.completions.create({
-      model: 'llama-3.3-70b-versatile',
+      model: getGroqModel(),
       messages: [
         { role: 'system', content: 'Health analyst. Return valid JSON only.' },
         { role: 'user', content: `Analyze: ${JSON.stringify(logSummary)}\nReturn: {"trends":[{"metric":"","trend":"improving","note":""}],"positives":[""],"concerns":[""],"recommendations":[""]}` }
