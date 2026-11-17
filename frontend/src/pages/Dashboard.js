@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Link, useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import api from '../utils/api';
 import toast from 'react-hot-toast';
@@ -8,8 +8,8 @@ import DischargeAutomationModal from '../components/DischargeAutomationModal';
 import { 
   Activity, Heart, Thermometer, Wind, AlertTriangle, Calendar, Pill, 
   Bot, TrendingUp, TrendingDown, ChevronRight, Shield, PhoneCall, 
-  Ambulance, Sparkles, Stethoscope, AlertCircle, Phone, Copy, Check, 
-  MapPin, User, ShieldAlert, ArrowUpRight
+  Siren as Ambulance, Sparkles, Stethoscope, AlertCircle, Copy, Check, 
+  User, ShieldAlert, ArrowUpRight
 } from 'lucide-react';
 import { Line } from 'react-chartjs-2';
 import { 
@@ -79,7 +79,6 @@ const AlertCard = ({ alert }) => {
 
 const Dashboard = () => {
   const { user } = useAuth();
-  const navigate = useNavigate();
   const [data, setData] = useState(null);
   const [trend, setTrend] = useState([]);
   const [appointments, setAppointments] = useState([]);
@@ -438,7 +437,7 @@ Emergency Contact: Call immediately`;
             >
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                 <ShieldAlert size={22} color="#ef4444" />
-                <span style={{ fontSize: '0.72rem', fontWeight: 800 }}>ALERT</span>
+                <span style={{ fontSize: '0.72rem', fontWeight: 800 }}>{sosSent ? 'DISPATCHED' : 'ALERT'}</span>
               </div>
               <div style={{ fontWeight: 800, fontSize: '0.92rem', marginTop: 4 }}>Caregiver SOS</div>
               <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>Notify Family & Doctor</div>

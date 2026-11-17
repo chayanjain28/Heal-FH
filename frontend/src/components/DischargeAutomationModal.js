@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { 
-  X, Upload, FileText, Sparkles, CheckCircle2, AlertTriangle, 
-  Clock, ShieldAlert, Pill, Dumbbell, Utensils, AlertOctagon,
-  ArrowRight, Check, Activity
+  X, Upload, Sparkles, CheckCircle2, 
+  ShieldAlert, Pill, Dumbbell, AlertOctagon,
+  Check
 } from 'lucide-react';
 import api from '../utils/api';
 import toast from 'react-hot-toast';
