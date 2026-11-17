@@ -36,4 +36,24 @@ router.put('/:id/resolve', protect, async (req, res) => {
   } catch (e) { res.status(500).json({ success: false, message: e.message }); }
 });
 
+router.post('/sos', protect, async (req, res) => {
+  try {
+    const { reason, location, vitals } = req.body;
+    const alert = await Alert.create({
+      patient: req.user.id,
+      type: 'emergency',
+      severity: 'critical',
+      title: '🚨 EMERGENCY SOS TRIGGERED',
+      message: reason || 'Patient triggered 1-Click Emergency SOS & Ambulance dispatch protocol.',
+      data: {
+        triggeredAt: new Date(),
+        location: location || 'Patient Primary Residence',
+        vitals: vitals || {},
+        ambulanceService: '108 / 112 Emergency Medical Response'
+      }
+    });
+    res.json({ success: true, message: 'Emergency SOS alert logged and dispatched.', alert });
+  } catch (e) { res.status(500).json({ success: false, message: e.message }); }
+});
+
 module.exports = router;

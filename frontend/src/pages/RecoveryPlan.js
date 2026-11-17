@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { ClipboardList, Target, Dumbbell, Utensils, Plus, CheckCircle, Circle, Shield, TrendingUp, Sparkles } from 'lucide-react';
 import api from '../utils/api';
 import toast from 'react-hot-toast';
+import DischargeAutomationModal from '../components/DischargeAutomationModal';
 
 const RecoveryPlan = () => {
   const [plan, setPlan] = useState(null);
@@ -10,21 +11,23 @@ const RecoveryPlan = () => {
   const [prediction, setPrediction] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showCreate, setShowCreate] = useState(false);
+  const [showAutoModal, setShowAutoModal] = useState(false);
   const [form, setForm] = useState({ title: '', description: '', phase: 'acute', expectedEndDate: '', dietaryGuidelines: '', restrictions: '', goals: '' });
 
+  const load = async () => {
+    try {
+      const [planRes, scoreRes, predRes] = await Promise.all([
+        api.get('/recovery/plan'),
+        api.get('/recovery/score'),
+        api.get('/recovery/predict'),
+      ]);
+      setPlan(planRes.data.plan);
+      setScore(scoreRes.data.score);
+      setPrediction(predRes.data.prediction);
+    } catch { } finally { setLoading(false); }
+  };
+
   useEffect(() => {
-    const load = async () => {
-      try {
-        const [planRes, scoreRes, predRes] = await Promise.all([
-          api.get('/recovery/plan'),
-          api.get('/recovery/score'),
-          api.get('/recovery/predict'),
-        ]);
-        setPlan(planRes.data.plan);
-        setScore(scoreRes.data.score);
-        setPrediction(predRes.data.prediction);
-      } catch { } finally { setLoading(false); }
-    };
     load();
   }, []);
 
@@ -52,14 +55,24 @@ const RecoveryPlan = () => {
 
   return (
     <div>
-      <div className="page-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+      <div className="page-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: 12 }}>
         <div>
           <h1 className="page-title">Recovery Plan</h1>
           <p className="page-subtitle">Your personalized post-discharge recovery roadmap</p>
         </div>
-        <motion.button whileHover={{ scale: 1.03 }} onClick={() => setShowCreate(true)} className="btn btn-primary">
-          <Plus size={16} /> {plan ? 'Update Plan' : 'Create Plan'}
-        </motion.button>
+        <div style={{ display: 'flex', gap: 10 }}>
+          <motion.button 
+            whileHover={{ scale: 1.03 }} 
+            onClick={() => setShowAutoModal(true)} 
+            className="btn"
+            style={{ background: 'var(--gradient-main)', color: '#fff', border: 'none', display: 'flex', alignItems: 'center', gap: 8, padding: '10px 18px', borderRadius: 12, fontWeight: 700, fontSize: '0.88rem', boxShadow: '0 4px 14px rgba(14,165,233,0.3)' }}
+          >
+            <Sparkles size={16} /> Auto-Generate from Discharge Sheet
+          </motion.button>
+          <motion.button whileHover={{ scale: 1.03 }} onClick={() => setShowCreate(true)} className="btn btn-primary">
+            <Plus size={16} /> {plan ? 'Edit Manually' : 'Manual Plan'}
+          </motion.button>
+        </div>
       </div>
 
       {/* Score + Risk Row */}
@@ -244,6 +257,13 @@ const RecoveryPlan = () => {
           </motion.div>
         </div>
       )}
+
+      {/* Auto Pathway Modal */}
+      <DischargeAutomationModal
+        isOpen={showAutoModal}
+        onClose={() => setShowAutoModal(false)}
+        onPathwayApplied={() => load()}
+      />
     </div>
   );
 };

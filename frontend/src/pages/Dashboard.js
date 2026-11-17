@@ -1,11 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import api from '../utils/api';
-import { Activity, Heart, Thermometer, Wind, AlertTriangle, Calendar, Pill, Bot, TrendingUp, TrendingDown, ChevronRight, Shield } from 'lucide-react';
+import toast from 'react-hot-toast';
+import DischargeAutomationModal from '../components/DischargeAutomationModal';
+import { 
+  Activity, Heart, Thermometer, Wind, AlertTriangle, Calendar, Pill, 
+  Bot, TrendingUp, TrendingDown, ChevronRight, Shield, PhoneCall, 
+  Ambulance, Sparkles, Stethoscope, AlertCircle, Phone, Copy, Check, 
+  MapPin, User, ShieldAlert, ArrowUpRight
+} from 'lucide-react';
 import { Line } from 'react-chartjs-2';
-import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Tooltip, Legend, Filler } from 'chart.js';
+import { 
+  Chart as ChartJS, CategoryScale, LinearScale, PointElement, 
+  LineElement, Tooltip, Legend, Filler 
+} from 'chart.js';
+
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Tooltip, Legend, Filler);
 
 const RecoveryGauge = ({ score, category }) => {
@@ -52,52 +63,96 @@ const VitalCard = ({ icon: Icon, label, value, unit, color, status }) => (
 );
 
 const AlertCard = ({ alert }) => {
-  const colors = { low: '#10b981', medium: '#f59e0b', high: '#ef4444', critical: '#7f1d1d' };
-  const bg = { low: 'rgba(16,185,129,0.1)', medium: 'rgba(245,158,11,0.1)', high: 'rgba(239,68,68,0.1)', critical: 'rgba(127,29,29,0.2)' };
+  const colors = { low: '#10b981', medium: '#f59e0b', high: '#ef4444', critical: '#ef4444' };
+  const bg = { low: 'rgba(16,185,129,0.1)', medium: 'rgba(245,158,11,0.1)', high: 'rgba(239,68,68,0.1)', critical: 'rgba(239,68,68,0.18)' };
   return (
-    <div style={{ padding: '12px 16px', borderRadius: 12, background: bg[alert.severity], border: `1px solid ${colors[alert.severity]}30`, display: 'flex', gap: 12, alignItems: 'flex-start' }}>
-      <AlertTriangle size={16} color={colors[alert.severity]} style={{ flexShrink: 0, marginTop: 2 }} />
+    <div style={{ padding: '12px 16px', borderRadius: 12, background: bg[alert.severity] || bg.medium, border: `1px solid ${colors[alert.severity] || colors.medium}30`, display: 'flex', gap: 12, alignItems: 'flex-start' }}>
+      <AlertTriangle size={16} color={colors[alert.severity] || colors.medium} style={{ flexShrink: 0, marginTop: 2 }} />
       <div style={{ flex: 1, minWidth: 0 }}>
         <div style={{ fontWeight: 700, fontSize: '0.85rem', color: 'var(--text-primary)', marginBottom: 2 }}>{alert.title}</div>
         <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{alert.message}</div>
       </div>
-      <span style={{ fontSize: '0.7rem', fontWeight: 700, color: colors[alert.severity], textTransform: 'uppercase', flexShrink: 0, padding: '2px 8px', borderRadius: 6, background: `${colors[alert.severity]}20` }}>{alert.severity}</span>
+      <span style={{ fontSize: '0.7rem', fontWeight: 700, color: colors[alert.severity] || colors.medium, textTransform: 'uppercase', flexShrink: 0, padding: '2px 8px', borderRadius: 6, background: `${colors[alert.severity] || colors.medium}20` }}>{alert.severity}</span>
     </div>
   );
 };
 
 const Dashboard = () => {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [data, setData] = useState(null);
   const [trend, setTrend] = useState([]);
   const [appointments, setAppointments] = useState([]);
   const [medications, setMedications] = useState([]);
+  const [topDoctors, setTopDoctors] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showAutoModal, setShowAutoModal] = useState(false);
+  const [showEmergencyModal, setShowEmergencyModal] = useState(false);
+  const [sosSent, setSosSent] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  const loadData = async () => {
+    try {
+      const [dashRes, trendRes, apptRes, medRes, docRes] = await Promise.all([
+        api.get('/recovery/dashboard'),
+        api.get('/health-logs/trend?days=7&vital=heartRate'),
+        api.get('/appointments/upcoming'),
+        api.get('/medications'),
+        api.get('/doctors?limit=3&minRating=4.5')
+      ]);
+      setData(dashRes.data.dashboard);
+      setTrend(trendRes.data.trend || []);
+      setAppointments(apptRes.data.appointments || []);
+      setMedications(medRes.data.medications || []);
+      setTopDoctors(docRes.data.doctors || []);
+    } catch (e) {
+      console.error('Dashboard load error:', e);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const load = async () => {
-      try {
-        const [dashRes, trendRes, apptRes, medRes] = await Promise.all([
-          api.get('/recovery/dashboard'),
-          api.get('/health-logs/trend?days=7&vital=heartRate'),
-          api.get('/appointments/upcoming'),
-          api.get('/medications')
-        ]);
-        setData(dashRes.data.dashboard);
-        setTrend(trendRes.data.trend || []);
-        setAppointments(apptRes.data.appointments || []);
-        setMedications(medRes.data.medications || []);
-      } catch (e) {
-        console.error(e);
-      } finally { setLoading(false); }
-    };
-    load();
+    loadData();
   }, []);
 
   const vitals = data?.latestVitals || {};
   const score = data?.recoveryScore || { total: 0, category: 'Loading...', breakdown: {} };
   const prediction = data?.riskPrediction || { riskLevel: 'low', risks: [] };
   const alerts = data?.recentAlerts || [];
+  const criticalAlerts = alerts.filter(a => a.severity === 'critical' || a.severity === 'high');
+
+  const handleCallAmbulance = () => {
+    window.location.href = 'tel:108';
+    setShowEmergencyModal(true);
+  };
+
+  const handleTriggerSOS = async () => {
+    try {
+      await api.post('/alerts/sos', {
+        reason: 'Patient triggered 1-Click Distress SOS from Dashboard',
+        vitals: vitals
+      });
+      setSosSent(true);
+      toast.success('🚨 EMERGENCY SOS SENT! Caregiver & Medical Triage Team Alerted.');
+      loadData();
+    } catch (e) {
+      toast.error('Failed to dispatch SOS alert.');
+    }
+  };
+
+  const handleCopyEmergencyInfo = () => {
+    const text = `HEAL FROM HOME - EMERGENCY PATIENT SUMMARY
+Patient Name: ${user?.name || 'Patient'}
+Condition: Post-Op Recovery
+Latest Vitals: Heart Rate: ${vitals.heartRate || 'N/A'} bpm, BP: ${vitals.bloodPressureSystolic ? `${vitals.bloodPressureSystolic}/${vitals.bloodPressureDiastolic}` : 'N/A'} mmHg, SpO2: ${vitals.oxygenSaturation || 'N/A'}%, Temp: ${vitals.temperature || 'N/A'}°C
+Current Medications: ${medications.map(m => m.name).join(', ') || 'None recorded'}
+Emergency Contact: Call immediately`;
+    navigator.clipboard.writeText(text);
+    setCopied(true);
+    toast.success('Emergency summary copied to clipboard!');
+    setTimeout(() => setCopied(false), 3000);
+  };
 
   const chartData = {
     labels: trend.map(t => new Date(t.timestamp).toLocaleDateString('en-IN', { month: 'short', day: 'numeric' })),
@@ -127,19 +182,135 @@ const Dashboard = () => {
 
   if (loading) return (
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '60vh' }}>
-      <div style={{ textAlign: 'center' }}><div className="spinner" style={{ width: 40, height: 40, margin: '0 auto 12px' }} /><p style={{ color: 'var(--text-muted)' }}>Loading your dashboard...</p></div>
+      <div style={{ textAlign: 'center' }}><div className="spinner" style={{ width: 40, height: 40, margin: '0 auto 12px' }} /><p style={{ color: 'var(--text-muted)' }}>Loading your recovery dashboard...</p></div>
     </div>
   );
 
   return (
     <div>
       {/* Header */}
-      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="page-header">
-        <h1 className="page-title">Good {new Date().getHours() < 12 ? 'Morning' : new Date().getHours() < 17 ? 'Afternoon' : 'Evening'}, {user?.name?.split(' ')[0]} 👋</h1>
-        <p className="page-subtitle">Here's your health summary for today, {new Date().toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long' })}</p>
+      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="page-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12 }}>
+        <div>
+          <h1 className="page-title">Good {new Date().getHours() < 12 ? 'Morning' : new Date().getHours() < 17 ? 'Afternoon' : 'Evening'}, {user?.name?.split(' ')[0]} 👋</h1>
+          <p className="page-subtitle">Here's your real-time recovery status for {new Date().toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long' })}</p>
+        </div>
+
+        {/* Quick Action Top Right */}
+        <div style={{ display: 'flex', gap: 10 }}>
+          <motion.button 
+            whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}
+            onClick={() => setShowAutoModal(true)}
+            className="btn"
+            style={{ background: 'var(--gradient-main)', color: '#fff', border: 'none', display: 'flex', alignItems: 'center', gap: 8, padding: '10px 18px', borderRadius: 12, fontWeight: 700, fontSize: '0.88rem', boxShadow: '0 4px 14px rgba(14,165,233,0.3)' }}
+          >
+            <Sparkles size={16} /> Auto-Pathway Ingestion
+          </motion.button>
+          <motion.button 
+            whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}
+            onClick={handleCallAmbulance}
+            style={{ background: 'rgba(239, 68, 68, 0.15)', color: '#ef4444', border: '1px solid rgba(239, 68, 68, 0.4)', display: 'flex', alignItems: 'center', gap: 8, padding: '10px 18px', borderRadius: 12, fontWeight: 800, fontSize: '0.88rem', cursor: 'pointer' }}
+          >
+            <Ambulance size={18} /> 1-Click 108
+          </motion.button>
+        </div>
       </motion.div>
 
-      {/* Top Row: Recovery Score + Risk + Quick Actions */}
+      {/* Prominent High-Visibility Critical Alerts Banner */}
+      {criticalAlerts.length > 0 && (
+        <motion.div 
+          initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }}
+          style={{
+            padding: '14px 20px', borderRadius: 16, marginBottom: 20,
+            background: 'linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(185, 28, 28, 0.15))',
+            border: '1px solid rgba(239, 68, 68, 0.5)',
+            display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12,
+            boxShadow: '0 8px 24px rgba(239, 68, 68, 0.2)'
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            <div style={{ width: 36, height: 36, borderRadius: 10, background: '#ef4444', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff' }}>
+              <AlertCircle size={20} />
+            </div>
+            <div>
+              <div style={{ fontWeight: 800, fontSize: '0.92rem', color: 'var(--text-primary)' }}>
+                🚨 {criticalAlerts[0].title}
+              </div>
+              <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+                {criticalAlerts[0].message}
+              </div>
+            </div>
+          </div>
+          <div style={{ display: 'flex', gap: 8 }}>
+            <button
+              onClick={handleCallAmbulance}
+              style={{
+                padding: '6px 14px', borderRadius: 8, background: '#ef4444', color: '#fff',
+                border: 'none', fontWeight: 800, fontSize: '0.78rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6
+              }}
+            >
+              <Ambulance size={14} /> Call 108 Ambulance
+            </button>
+            <Link
+              to="/doctors"
+              style={{
+                padding: '6px 14px', borderRadius: 8, background: 'rgba(255,255,255,0.2)', color: 'var(--text-primary)',
+                textDecoration: 'none', fontWeight: 700, fontSize: '0.78rem', display: 'flex', alignItems: 'center', gap: 6
+              }}
+            >
+              <Stethoscope size={14} /> Consult Doctor
+            </Link>
+          </div>
+        </motion.div>
+      )}
+
+      {/* Feature Highlight: Zero-Click Discharge Summary -> Care Pathway */}
+      <motion.div 
+        initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
+        style={{
+          padding: '20px 24px', borderRadius: 20, marginBottom: 20,
+          background: 'linear-gradient(135deg, rgba(14, 165, 233, 0.12), rgba(16, 185, 129, 0.12))',
+          border: '1px solid rgba(14, 165, 233, 0.3)',
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: 16, maxWidth: 650 }}>
+          <div style={{ width: 50, height: 50, borderRadius: 16, background: 'linear-gradient(135deg, #0ea5e9, #10b981)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', flexShrink: 0, boxShadow: '0 8px 20px rgba(14,165,233,0.3)' }}>
+            <Sparkles size={26} />
+          </div>
+          <div>
+            <div style={{ fontWeight: 800, fontSize: '1.05rem', color: 'var(--text-primary)', marginBottom: 2 }}>
+              Autonomous Post-Discharge Care Pathway
+            </div>
+            <div style={{ fontSize: '0.84rem', color: 'var(--text-muted)', lineHeight: 1.4 }}>
+              Upload your hospital discharge sheet: the system autonomously extracts all medications, checks drug interactions, sets reminder timetables, and generates day-by-day rehabilitation exercises without manual typing.
+            </div>
+          </div>
+        </div>
+        <div style={{ display: 'flex', gap: 10, flexShrink: 0 }}>
+          <button
+            onClick={() => setShowAutoModal(true)}
+            style={{
+              padding: '10px 20px', borderRadius: 12, background: 'var(--gradient-main)',
+              color: '#fff', border: 'none', fontWeight: 800, fontSize: '0.88rem', cursor: 'pointer',
+              display: 'flex', alignItems: 'center', gap: 8, boxShadow: '0 4px 15px rgba(14,165,233,0.35)'
+            }}
+          >
+            <Sparkles size={16} /> Run Auto-Pathway Ingestion
+          </button>
+          <Link
+            to="/recovery-plan"
+            style={{
+              padding: '10px 16px', borderRadius: 12, background: 'var(--glass-bg)',
+              color: 'var(--text-primary)', border: '1px solid var(--glass-border)',
+              fontWeight: 700, fontSize: '0.85rem', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 4
+            }}
+          >
+            View Roadmap <ChevronRight size={16} />
+          </Link>
+        </div>
+      </motion.div>
+
+      {/* Top Row: Recovery Score + Vitals & Chart + Risk */}
       <div style={{ display: 'grid', gridTemplateColumns: '300px 1fr 280px', gap: 20, marginBottom: 20 }}>
         {/* Recovery Score */}
         <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1 }} className="glass-card" style={{ padding: 28, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
@@ -228,10 +399,119 @@ const Dashboard = () => {
         </div>
       </div>
 
+      {/* QUICK ACCESS EMERGENCY & HIGHLY SUGGESTED RECOVERY DOCTORS BLOCK */}
+      <div className="grid-2" style={{ marginBottom: 20 }}>
+        {/* Card 1: 1-Click Emergency Access & Rapid Response Hub */}
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="glass-card" style={{ padding: 24, border: '1px solid rgba(239, 68, 68, 0.25)', background: 'linear-gradient(135deg, rgba(239, 68, 68, 0.05), rgba(14, 165, 233, 0.05))' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+            <h3 style={{ fontSize: '1rem', fontWeight: 800, color: '#ef4444', display: 'flex', alignItems: 'center', gap: 8 }}>
+              <Ambulance size={20} color="#ef4444" /> 1-Click Emergency & Rapid Care
+            </h3>
+            <span style={{ fontSize: '0.72rem', fontWeight: 700, padding: '3px 8px', borderRadius: 8, background: 'rgba(239, 68, 68, 0.15)', color: '#ef4444' }}>
+              24/7 ACTIVE
+            </span>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 12, marginBottom: 16 }}>
+            <button
+              onClick={handleCallAmbulance}
+              style={{
+                padding: '14px 16px', borderRadius: 14, background: '#ef4444', color: '#fff',
+                border: 'none', cursor: 'pointer', textAlign: 'left', display: 'flex', flexDirection: 'column', gap: 4,
+                boxShadow: '0 6px 20px rgba(239, 68, 68, 0.35)'
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <Ambulance size={22} />
+                <span style={{ fontSize: '0.75rem', fontWeight: 900, background: 'rgba(255,255,255,0.25)', padding: '2px 6px', borderRadius: 6 }}>108</span>
+              </div>
+              <div style={{ fontWeight: 800, fontSize: '0.92rem', marginTop: 4 }}>Call Ambulance</div>
+              <div style={{ fontSize: '0.72rem', opacity: 0.9 }}>1-Tap Emergency Response</div>
+            </button>
+
+            <button
+              onClick={handleTriggerSOS}
+              style={{
+                padding: '14px 16px', borderRadius: 14, background: 'rgba(239, 68, 68, 0.12)', color: '#ef4444',
+                border: '1px solid rgba(239, 68, 68, 0.3)', cursor: 'pointer', textAlign: 'left', display: 'flex', flexDirection: 'column', gap: 4
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <ShieldAlert size={22} color="#ef4444" />
+                <span style={{ fontSize: '0.72rem', fontWeight: 800 }}>ALERT</span>
+              </div>
+              <div style={{ fontWeight: 800, fontSize: '0.92rem', marginTop: 4 }}>Caregiver SOS</div>
+              <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>Notify Family & Doctor</div>
+            </button>
+          </div>
+
+          {/* Quick Info Strip */}
+          <div style={{ padding: '12px 14px', borderRadius: 12, background: 'var(--glass-bg)', border: '1px solid var(--glass-border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+              <User size={16} color="var(--primary)" />
+              <div>
+                <div style={{ fontSize: '0.78rem', fontWeight: 700, color: 'var(--text-primary)' }}>Quick Triage ID: #{user?.id ? user.id.slice(-6).toUpperCase() : 'HFH-01'}</div>
+                <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>Status: Post-Op Care Active · High-Speed Tele-Triage</div>
+              </div>
+            </div>
+            <button
+              onClick={() => setShowEmergencyModal(true)}
+              style={{ padding: '6px 12px', borderRadius: 8, background: 'transparent', border: '1px solid var(--glass-border)', color: 'var(--primary)', fontSize: '0.75rem', fontWeight: 700, cursor: 'pointer' }}
+            >
+              View Card
+            </button>
+          </div>
+        </motion.div>
+
+        {/* Card 2: Highly Recommended Recovery Specialists */}
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="glass-card" style={{ padding: 24 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+            <h3 style={{ fontSize: '1rem', fontWeight: 800, color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: 8 }}>
+              <Stethoscope size={20} color="var(--primary)" /> Suggested Recovery Specialists
+            </h3>
+            <Link to="/doctors" style={{ fontSize: '0.8rem', color: 'var(--primary)', textDecoration: 'none', fontWeight: 600 }}>
+              All Doctors ({topDoctors.length > 0 ? 8 : 0}) →
+            </Link>
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            {topDoctors.length > 0 ? topDoctors.slice(0, 3).map(doc => (
+              <div key={doc._id} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '10px 12px', borderRadius: 12, background: 'var(--glass-bg)', border: '1px solid var(--glass-border)' }}>
+                <div style={{ width: 42, height: 42, borderRadius: '50%', background: 'linear-gradient(135deg, #0ea5e9, #10b981)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: '1.1rem', flexShrink: 0 }}>
+                  👨‍⚕️
+                </div>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{ fontWeight: 800, fontSize: '0.88rem', color: 'var(--text-primary)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                    {doc.name}
+                  </div>
+                  <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+                    {doc.specialization} · ⭐ {doc.rating || 4.8} ({doc.experience} yrs)
+                  </div>
+                </div>
+                <div style={{ textAlign: 'right', flexShrink: 0 }}>
+                  <div style={{ fontSize: '0.82rem', fontWeight: 800, color: '#10b981' }}>₹{doc.consultationFee || 500}</div>
+                  <Link
+                    to="/appointments"
+                    style={{ fontSize: '0.72rem', fontWeight: 700, color: 'var(--primary)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 2, marginTop: 2 }}
+                  >
+                    1-Click Book <ArrowUpRight size={12} />
+                  </Link>
+                </div>
+              </div>
+            )) : (
+              <div style={{ textAlign: 'center', padding: '16px 0', color: 'var(--text-muted)', fontSize: '0.82rem' }}>
+                <Stethoscope size={24} style={{ opacity: 0.4, marginBottom: 4 }} />
+                <p>Loading suggested specialists...</p>
+              </div>
+            )}
+          </div>
+        </motion.div>
+      </div>
+
       {/* Bottom Row: Appointments + Medications */}
       <div className="grid-2">
         {/* Appointments */}
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="glass-card" style={{ padding: 24 }}>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="glass-card" style={{ padding: 24 }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
             <h3 style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: 8 }}><Calendar size={18} color="#0ea5e9" /> Upcoming Appointments</h3>
             <Link to="/appointments" style={{ fontSize: '0.8rem', color: 'var(--primary)', textDecoration: 'none', fontWeight: 600 }}>Book new</Link>
@@ -260,7 +540,7 @@ const Dashboard = () => {
         {/* Medications */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="glass-card" style={{ padding: 24 }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
-            <h3 style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: 8 }}><Pill size={18} color="#10b981" /> Today's Medications</h3>
+            <h3 style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: 8 }}><Pill size={18} color="#10b981" /> Today's Medications ({medications.length})</h3>
             <Link to="/medications" style={{ fontSize: '0.8rem', color: 'var(--primary)', textDecoration: 'none', fontWeight: 600 }}>Manage</Link>
           </div>
           {medications.length > 0 ? medications.slice(0, 4).map(med => (
@@ -280,7 +560,12 @@ const Dashboard = () => {
             <div style={{ textAlign: 'center', padding: '24px 0', color: 'var(--text-muted)' }}>
               <Pill size={32} style={{ marginBottom: 8, opacity: 0.4 }} />
               <p style={{ fontSize: '0.85rem' }}>No medications added</p>
-              <Link to="/medications" style={{ color: 'var(--primary)', fontSize: '0.85rem', fontWeight: 600, textDecoration: 'none' }}>Add medication →</Link>
+              <button 
+                onClick={() => setShowAutoModal(true)} 
+                style={{ background: 'transparent', border: 'none', color: 'var(--primary)', fontSize: '0.85rem', fontWeight: 600, cursor: 'pointer' }}
+              >
+                ⚡ Ingest from Discharge Sheet →
+              </button>
             </div>
           )}
         </motion.div>
@@ -294,13 +579,89 @@ const Dashboard = () => {
               <Bot size={24} color="white" />
             </div>
             <div style={{ flex: 1 }}>
-              <div style={{ fontWeight: 800, fontSize: '1rem', color: 'var(--text-primary)', marginBottom: 4 }}>Ask MedAI — Your 24/7 AI Assistant</div>
-              <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>Get personalized recovery advice, report explanations, and health insights anytime</div>
+              <div style={{ fontWeight: 800, fontSize: '1rem', color: 'var(--text-primary)', marginBottom: 4 }}>Ask MedAI — Your 24/7 AI Clinical Assistant</div>
+              <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>Get instant guidance on symptoms, medication side-effects, and recovery protocols anytime</div>
             </div>
             <ChevronRight size={20} color="var(--accent)" />
           </motion.div>
         </Link>
       </motion.div>
+
+      {/* Zero-Click Discharge Summary Automation Modal */}
+      <DischargeAutomationModal
+        isOpen={showAutoModal}
+        onClose={() => setShowAutoModal(false)}
+        onPathwayApplied={() => loadData()}
+      />
+
+      {/* 1-Click Emergency Card Modal */}
+      {showEmergencyModal && (
+        <div style={{
+          position: 'fixed', inset: 0, zIndex: 1100,
+          background: 'rgba(3, 7, 18, 0.8)', backdropFilter: 'blur(8px)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20
+        }}>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            style={{
+              width: '100%', maxWidth: 520, background: 'var(--bg-card)',
+              borderRadius: 24, border: '1px solid rgba(239, 68, 68, 0.4)',
+              boxShadow: '0 25px 60px rgba(239, 68, 68, 0.3)', padding: 24
+            }}
+          >
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                <div style={{ width: 38, height: 38, borderRadius: 10, background: '#ef4444', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff' }}>
+                  <Ambulance size={20} />
+                </div>
+                <div>
+                  <h3 style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--text-primary)', margin: 0 }}>Emergency Dispatch Card</h3>
+                  <div style={{ fontSize: '0.78rem', color: '#ef4444', fontWeight: 700 }}>Ambulance Dial Initiated (108 / 112)</div>
+                </div>
+              </div>
+              <button onClick={() => setShowEmergencyModal(false)} style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: 'var(--text-muted)', fontSize: '1.2rem' }}>✕</button>
+            </div>
+
+            <div style={{ background: 'var(--glass-bg)', padding: 16, borderRadius: 14, border: '1px solid var(--glass-border)', marginBottom: 16 }}>
+              <div style={{ fontWeight: 700, fontSize: '0.85rem', color: 'var(--text-primary)', marginBottom: 8 }}>Paramedic Live Handover Summary:</div>
+              <div style={{ fontSize: '0.82rem', color: 'var(--text-muted)', lineHeight: 1.6 }}>
+                <div>• <strong>Patient:</strong> {user?.name || 'Patient'} ({user?.email})</div>
+                <div>• <strong>Heart Rate:</strong> {vitals.heartRate || '—'} bpm</div>
+                <div>• <strong>Blood Pressure:</strong> {vitals.bloodPressureSystolic ? `${vitals.bloodPressureSystolic}/${vitals.bloodPressureDiastolic} mmHg` : '—'}</div>
+                <div>• <strong>SpO2:</strong> {vitals.oxygenSaturation ? `${vitals.oxygenSaturation}%` : '—'}</div>
+                <div>• <strong>Active Meds:</strong> {medications.map(m => m.name).slice(0, 3).join(', ') || 'None'}</div>
+              </div>
+            </div>
+
+            <div style={{ display: 'flex', gap: 10 }}>
+              <button
+                onClick={handleCopyEmergencyInfo}
+                style={{
+                  flex: 1, padding: '12px', borderRadius: 12, background: 'var(--glass-bg)',
+                  border: '1px solid var(--glass-border)', color: 'var(--text-primary)', fontWeight: 700,
+                  fontSize: '0.85rem', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8
+                }}
+              >
+                {copied ? <Check size={16} color="#10b981" /> : <Copy size={16} />}
+                {copied ? 'Copied!' : 'Copy Summary'}
+              </button>
+              <button
+                onClick={() => {
+                  window.location.href = 'tel:108';
+                }}
+                style={{
+                  flex: 1, padding: '12px', borderRadius: 12, background: '#ef4444',
+                  border: 'none', color: '#fff', fontWeight: 800, fontSize: '0.85rem',
+                  cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8
+                }}
+              >
+                <PhoneCall size={16} /> Redial 108
+              </button>
+            </div>
+          </motion.div>
+        </div>
+      )}
     </div>
   );
 };
