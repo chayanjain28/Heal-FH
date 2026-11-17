@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Hospital Discharge Summary - Apollo Heart Institute</title>
+<style>
+  @page {
+    size: A4;
+    margin: 15mm;
+  }
+  body {
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+    color: #1e293b;
+    line-height: 1.45;
+    font-size: 11pt;
+    margin: 0;
+    padding: 0;
+    background: #ffffff;
+  }
+  .header {
+    border-bottom: 3px solid #0284c7;
+    padding-bottom: 12px;
+    margin-bottom: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .hospital-name {
+    font-size: 18pt;
+    font-weight: 800;
+    color: #0369a1;
+    letter-spacing: -0.5px;
+  }
+  .hospital-sub {
+    font-size: 9.5pt;
+    color: #64748b;
+    margin-top: 2px;
+  }
+  .doc-badge {
+    text-align: right;
+    font-size: 9pt;
+    color: #0284c7;
+    font-weight: 700;
+    background: #f0f9ff;
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: 1px solid #bae6fd;
+  }
+  .patient-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    margin-bottom: 16px;
+  }
+  .patient-table td {
+    padding: 6px 12px;
+    font-size: 9.5pt;
+    border-bottom: 1px solid #e2e8f0;
+  }
+  .patient-table td.label {
+    font-weight: 700;
+    color: #475569;
+    width: 20%;
+  }
+  .patient-table td.val {
+    color: #0f172a;
+    width: 30%;
+  }
+  .section-title {
+    font-size: 11.5pt;
+    font-weight: 800;
+    color: #0369a1;
+    border-left: 4px solid #0284c7;
+    padding-left: 8px;
+    margin: 14px 0 8px 0;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+  .box {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 10px 14px;
+    margin-bottom: 12px;
+    font-size: 10pt;
+  }
+  .med-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 6px 0;
+  }
+  .med-table th {
+    background: #f1f5f9;
+    color: #334155;
+    text-align: left;
+    padding: 6px 10px;
+    font-size: 9pt;
+    font-weight: 700;
+    border-bottom: 2px solid #cbd5e1;
+  }
+  .med-table td {
+    padding: 6px 10px;
+    font-size: 9.5pt;
+    border-bottom: 1px solid #e2e8f0;
+  }
+  .highlight-danger {
+    background: #fef2f2;
+    border-left: 4px solid #ef4444;
+    padding: 10px 14px;
+    border-radius: 4px;
+    color: #991b1b;
+    font-size: 9.5pt;
+    margin: 8px 0;
+  }
+  .highlight-warning {
+    background: #fffbeb;
+    border-left: 4px solid #f59e0b;
+    padding: 8px 12px;
+    border-radius: 4px;
+    color: #92400e;
+    font-size: 9.5pt;
+    margin: 6px 0;
+  }
+  .footer {
+    margin-top: 24px;
+    border-top: 1px solid #cbd5e1;
+    padding-top: 12px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 9pt;
+    color: #64748b;
+  }
+  .signature {
+    text-align: right;
+    font-size: 9.5pt;
+    color: #0f172a;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <div class="hospital-name">APOLLO HEART INSTITUTE</div>
+    <div class="hospital-sub">Department of Interventional Cardiology & Cardiovascular Surgery | NABH Accredited</div>
+  </div>
+  <div class="doc-badge">
+    OFFICIAL DISCHARGE SUMMARY<br>
+    <span style="font-size: 8pt; font-weight: normal; color: #475569;">IPD-2026-88419</span>
+  </div>
+</div>
+
+<table class="patient-table">
+  <tr>
+    <td class="label">Patient Name:</td>
+    <td class="val"><strong>Rajesh Kumar Sharma</strong></td>
+    <td class="label">UHID / MRN:</td>
+    <td class="val">AHI-98210433</td>
+  </tr>
+  <tr>
+    <td class="label">Age / Gender:</td>
+    <td class="val">58 Yrs / Male</td>
+    <td class="label">Attending Consultant:</td>
+    <td class="val">Dr. Ananya Sen, MD, DM (Cardiology)</td>
+  </tr>
+  <tr>
+    <td class="label">Admission Date:</td>
+    <td class="val">12-Nov-2026, 09:30 AM</td>
+    <td class="label">Discharge Date:</td>
+    <td class="val">17-Nov-2026, 11:00 AM</td>
+  </tr>
+</table>
+
+<div class="section-title">1. Primary Diagnosis</div>
+<div class="box">
+  <strong>1. Acute Coronary Syndrome (NSTEMI)</strong><br>
+  2. Coronary Artery Disease - Two-Vessel Involvement (90% Mid-LAD, 80% Proximal LCx)<br>
+  3. Essential Systemic Hypertension (Grade II) & Dyslipidemia
+</div>
+
+<div class="section-title">2. Procedure Performed</div>
+<div class="box">
+  <strong>Percutaneous Coronary Intervention (PCI / PTCA) with Drug-Eluting Stents (DES)</strong><br>
+  - Date: 13-Nov-2026 | Route: Right Radial Artery Approach<br>
+  - Stents Deployed: Resolute Onyx Zotarolimus-Eluting Stent (3.0 x 24mm) to Mid-LAD; Promus Premier Everolimus-Eluting Stent (2.75 x 18mm) to Proximal LCx.<br>
+  - Outcome: Successful procedural outcome with 0% residual stenosis and TIMI-III distal perfusion.
+</div>
+
+<div class="section-title">3. Hospital Course & Pre-Discharge Vitals</div>
+<div class="box">
+  Patient was admitted via Emergency with acute chest tightness and Troponin elevation. Post-PCI, telemetry monitoring confirmed stable sinus rhythm with no recurrent ischemia. Echo on 16-Nov-2026 shows preserved Left Ventricular Ejection Fraction (LVEF 52%).<br>
+  <strong>Discharge Vitals:</strong> BP: 124/78 mmHg | Pulse: 68 bpm (regular) | SpO2: 98% (room air) | Radial puncture site healed.
+</div>
+
+<div class="section-title">4. Discharge Medications Protocol</div>
+<table class="med-table">
+  <thead>
+    <tr>
+      <th>Medication</th>
+      <th>Dosage</th>
+      <th>Frequency / Time</th>
+      <th>Duration</th>
+      <th>Special Instructions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Tab. Ecosprin (Aspirin)</strong></td>
+      <td>75 mg</td>
+      <td>Once daily (After Lunch)</td>
+      <td>Long term</td>
+      <td>Antiplatelet; take with water after food.</td>
+    </tr>
+    <tr>
+      <td><strong>Tab. Plavix (Clopidogrel)</strong></td>
+      <td>75 mg</td>
+      <td>Once daily (After Dinner)</td>
+      <td>12 Months</td>
+      <td>Essential Dual Antiplatelet Therapy (DAPT); do not omit.</td>
+    </tr>
+    <tr>
+      <td><strong>Tab. Atorvastatin (Lipitor)</strong></td>
+      <td>40 mg</td>
+      <td>Once daily (At Bedtime)</td>
+      <td>Ongoing</td>
+      <td>Plaque stabilizer; strictly avoid grapefruit juice.</td>
+    </tr>
+    <tr>
+      <td><strong>Tab. Betaloc XR (Metoprolol)</strong></td>
+      <td>25 mg</td>
+      <td>Once daily (08:00 AM)</td>
+      <td>Ongoing</td>
+      <td>Beta-blocker; hold if resting heart rate < 55 bpm.</td>
+    </tr>
+    <tr>
+      <td><strong>Tab. Pan-D (Pantoprazole)</strong></td>
+      <td>40 mg</td>
+      <td>Once daily (Empty Stomach)</td>
+      <td>1 Month</td>
+      <td>Take 30 minutes before breakfast for GI protection.</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="highlight-warning">
+  <strong>Food-Drug Safety Alert:</strong> Strictly avoid grapefruit and grapefruit juice while taking Atorvastatin, as it inhibits CYP3A4 metabolism and leads to dangerously elevated statin levels.
+</div>
+
+<div class="section-title">5. Post-Discharge Rehabilitation & Dietary Instructions</div>
+<div class="box">
+  - <strong>Diet:</strong> Low-sodium cardiac diet (&lt; 2g salt/day). Strictly no processed foods or trans fats.<br>
+  - <strong>Physical Activity:</strong> Light ambulation (10–15 minutes walking twice daily). Strictly avoid lifting weights &gt; 5 kg for 2 weeks.<br>
+  - <strong>Wound / Radial Puncture Care:</strong> Keep the right wrist dry and clean. Do not rub or apply hot compresses.
+</div>
+
+<div class="highlight-danger">
+  <strong>EMERGENCY RED FLAGS - CALL 108 OR DISPATCH SOS IMMEDIATELY IF:</strong><br>
+  - Recurrent crushing chest pain radiating to the jaw, neck, or left arm.<br>
+  - Sudden shortness of breath, orthopnea, or cold sweats.<br>
+  - Active bleeding, rapidly expanding hematoma, or numbness in the right hand/wrist puncture area.<br>
+  - Resting pulse below 50 bpm or above 120 bpm.
+</div>
+
+<div class="section-title">6. Follow-up Consultation</div>
+<div class="box">
+  <strong>Date:</strong> 24-Nov-2026 at 10:30 AM (7 Days Post-Discharge)<br>
+  <strong>Physician:</strong> Dr. Ananya Sen, OPD Block B, Room 204, Apollo Heart Institute.<br>
+  <strong>Required Tests:</strong> 12-lead ECG and Lipid Profile prior to OPD visit.
+</div>
+
+<div class="footer">
+  <div>Apollo Heart Institute &bull; 24x7 Emergency Helpline: 108 / 011-26925858</div>
+  <div class="signature">
+    <strong>Dr. Ananya Sen, MD, DM</strong><br>
+    Consultant Interventional Cardiologist<br>
+    Reg. No: MCI-2009-44821
+  </div>
+</div>
+
+</body>
+</html>

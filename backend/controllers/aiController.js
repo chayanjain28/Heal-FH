@@ -65,8 +65,19 @@ const extractTextFromRequest = async (req) => {
     if (isPdf && pdfParse) {
       try {
         const dataBuffer = fs.readFileSync(filePath);
-        const parsed = await pdfParse(dataBuffer);
-        if (parsed?.text?.trim()) text = parsed.text;
+        if (typeof pdfParse === 'function') {
+          const parsed = await pdfParse(dataBuffer);
+          if (parsed?.text?.trim()) text = parsed.text;
+        } else if (pdfParse.PDFParse) {
+          const parser = new pdfParse.PDFParse({ data: dataBuffer });
+          await parser.load();
+          const parsed = await parser.getText();
+          if (typeof parsed === 'string' && parsed.trim()) {
+            text = parsed;
+          } else if (parsed?.text?.trim()) {
+            text = parsed.text;
+          }
+        }
       } catch (err) {
         console.warn('PDF parsing fallback:', err.message);
       }

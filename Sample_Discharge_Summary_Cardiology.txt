@@ -1,0 +1,115 @@
+HOSPITAL DISCHARGE SUMMARY & CLINICAL COURSE
+================================================================================
+APOLLO HEART INSTITUTE & MULTISPECIALTY HOSPITALS
+Department of Interventional Cardiology & Cardiovascular Surgery
+Sector 26, Institutional Area, New Delhi - 110076
+NABH & JCI Accredited Hospital | Emergency 24x7: 108 / 011-26925858
+================================================================================
+
+PATIENT IDENTIFICATION & ADMISSION RECORD:
+--------------------------------------------------------------------------------
+Patient Name        : Rajesh Kumar Sharma
+Age / Gender        : 58 Years / Male
+IPD Registration No : IPD-2026-88419
+UHID                : AHI-98210433
+Date of Admission   : 12-Nov-2026, 09:30 AM
+Date of Discharge   : 17-Nov-2026, 11:00 AM
+Attending Consultant: Dr. Ananya Sen, MD, DM (Cardiology), FACC
+Department          : Interventional Cardiology
+
+PRIMARY DIAGNOSIS:
+--------------------------------------------------------------------------------
+1. Acute Coronary Syndrome - Non-ST Elevation Myocardial Infarction (NSTEMI)
+2. Coronary Artery Disease (CAD) - Two-Vessel Disease (LAD & LCx)
+3. Essential Systemic Hypertension (Grade II)
+4. Dyslipidemia
+
+PROCEDURE PERFORMED:
+--------------------------------------------------------------------------------
+- Date of Procedure : 13-Nov-2026, 11:30 AM
+- Procedure         : Coronary Angiography followed by Percutaneous Coronary 
+                      Intervention (PCI / PTCA) with Drug-Eluting Stents (DES)
+- Access Route      : Right Radial Artery Approach
+- Stents Deployed   :
+  * Resolute Onyx Zotarolimus-Eluting Stent (3.0 x 24 mm) deployed in Mid-LAD
+  * Promus Premier Everolimus-Eluting Stent (2.75 x 18 mm) deployed in Proximal LCx
+- Angiographic Result: Excellent final angiographic result with TIMI III distal flow.
+                      Zero residual stenosis, no dissection, no thrombus.
+
+HOSPITAL COURSE & CLINICAL SUMMARY:
+--------------------------------------------------------------------------------
+Patient presented with retrosternal chest discomfort, diaphoresis, and exertional
+dyspnea. Initial Troponin-I was elevated (1.82 ng/mL). Coronary angiography revealed
+90% stenosis in mid-LAD and 80% stenosis in proximal LCx. Successful primary stenting
+was executed without complications. Radial sheath was removed with TR-Band compression
+hemostasis. Post-procedure 48-hour continuous telemetry showed sinus rhythm with no
+ventricular ectopy. Echo showed preserved LVEF 52% with regional wall motion abnormality
+in anterior wall. Vitals prior to discharge: BP 124/78 mmHg, HR 68 bpm (regular),
+SpO2 98% on room air, Afebrile, radial puncture site clean with zero hematoma.
+
+DISCHARGE MEDICATIONS & DOSAGE PROTOCOL:
+--------------------------------------------------------------------------------
+1. Tab. ECOSPRIN 75 mg (Aspirin)
+   - Dose & Frequency : 1 tablet once daily (OD)
+   - Timing          : After lunch
+   - Instructions    : Do NOT stop without consulting cardiologist. Take with water.
+
+2. Tab. PLAVIX 75 mg (Clopidogrel)
+   - Dose & Frequency : 1 tablet once daily (OD)
+   - Timing          : After dinner
+   - Instructions    : Mandatory Dual Antiplatelet Therapy (DAPT) for 12 months 
+                       to prevent stent thrombosis.
+
+3. Tab. ATORVASTATIN 40 mg (Lipitor)
+   - Dose & Frequency : 1 tablet once daily (OD)
+   - Timing          : At bedtime (21:00)
+   - Instructions    : Lipid-lowering plaque stabilizer. Strict avoidance of grapefruit 
+                       juice as it dramatically increases drug blood concentrations.
+
+4. Tab. BETALOC XR 25 mg (Metoprolol Succinate Prolonged Release)
+   - Dose & Frequency : 1 tablet once daily (OD)
+   - Timing          : Morning after breakfast (08:00)
+   - Instructions    : Cardio-protective beta blocker. Check resting heart rate daily; 
+                       withhold dose and alert care team if resting HR < 55 bpm.
+
+5. Tab. PAN-D (Pantoprazole 40mg + Domperidone 30mg)
+   - Dose & Frequency : 1 capsule once daily (OD)
+   - Timing          : Morning empty stomach, 30 minutes before breakfast
+   - Instructions    : Gastric mucosal protection against NSAID/antiplatelet irritation.
+
+DIETARY GUIDELINES & CONTRAINDICATIONS:
+--------------------------------------------------------------------------------
+- Low sodium diet: Limit total salt intake to < 2.0 grams/day. No added table salt.
+- Heart-healthy diet: High fiber, vegetables, lentils, lean protein. Zero trans fats.
+- Strict Food-Drug Contraindication: AVOID GRAPEFRUIT AND GRAPEFRUIT JUICE (CYP3A4
+  inhibition leading to toxic statin buildup and risk of rhabdomyolysis).
+- Zero alcohol and strictly zero smoking or nicotine exposure.
+
+ACTIVITY & RECOVERY RESTRICTIONS:
+--------------------------------------------------------------------------------
+- Week 1: Light indoor ambulation only. 10 to 15 minutes of slow walking twice daily.
+- Lifting restrictions: Strictly no lifting objects heavier than 5 kg (11 lbs) for 2 weeks.
+- Driving restrictions: No driving motor vehicles for 7 days post-stenting.
+- Radial puncture site care: Keep right wrist dry and clean. Do not scrub dressing.
+
+RED-FLAG WARNING SIGNS (EMERGENCY 108 ALERT):
+--------------------------------------------------------------------------------
+Contact hospital emergency triage (108 / 112 / Caregiver SOS) immediately if:
+- Recurrent retrosternal squeezing, pressure, or chest pain radiating to jaw or left arm.
+- Sudden onset of breathing difficulty or orthopnea while lying flat.
+- Swelling, active bleeding, or painful expanding lump at right wrist puncture site.
+- Dizziness, cold clammy sweats, or persistent resting heart rate < 50 bpm or > 115 bpm.
+
+FOLLOW-UP APPOINTMENT:
+--------------------------------------------------------------------------------
+- Date: 24-Nov-2026 at 10:30 AM (7 Days Post-Discharge)
+- Clinic: OPD Block B, Room 204, Apollo Heart Institute
+- Physician: Dr. Ananya Sen
+- Investigations to bring: 12-Lead ECG, Fasting Lipid Profile, Renal Function Test.
+
+--------------------------------------------------------------------------------
+Authorized Signatory:
+Dr. Ananya Sen, MD, DM (Cardiology), FACC
+Reg. No: MCI-2009-44821
+Apollo Heart Institute, New Delhi
+================================================================================
