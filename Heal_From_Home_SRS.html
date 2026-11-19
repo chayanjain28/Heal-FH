@@ -1,0 +1,1774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Software Requirements Specification (SRS) - Heal From Home</title>
+<style>
+  @page {
+    size: A4;
+    margin: 20mm 18mm 22mm 18mm;
+    @top-center {
+      content: "Heal From Home | Software Requirements Specification (SRS)";
+      font-size: 8pt;
+      color: #64748b;
+      font-family: 'Segoe UI', Arial, sans-serif;
+    }
+    @bottom-right {
+      content: "Page " counter(page) " of " counter(pages);
+      font-size: 8pt;
+      color: #64748b;
+      font-family: 'Segoe UI', Arial, sans-serif;
+    }
+    @bottom-left {
+      content: "Department of Computer Science & Engineering | Medi-Caps University";
+      font-size: 8pt;
+      color: #64748b;
+      font-family: 'Segoe UI', Arial, sans-serif;
+    }
+  }
+
+  body {
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+    color: #1e293b;
+    line-height: 1.6;
+    font-size: 10pt;
+    background: #ffffff;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Cover Page */
+  .cover-page {
+    page-break-after: always;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: center;
+    padding: 40px 20px 20px 20px;
+    box-sizing: border-box;
+  }
+  .univ-header {
+    border-bottom: 2px solid #0284c7;
+    padding-bottom: 15px;
+  }
+  .univ-name {
+    font-size: 20pt;
+    font-weight: 900;
+    color: #0369a1;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .univ-sub {
+    font-size: 10pt;
+    font-weight: 600;
+    color: #475569;
+    margin-top: 4px;
+  }
+  .doc-title-box {
+    margin: 50px 0 30px 0;
+  }
+  .project-badge {
+    display: inline-block;
+    background: #e0f2fe;
+    color: #0369a1;
+    font-size: 10pt;
+    font-weight: 800;
+    padding: 6px 18px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 15px;
+  }
+  .project-title {
+    font-size: 26pt;
+    font-weight: 900;
+    color: #0f172a;
+    line-height: 1.2;
+    margin-bottom: 10px;
+  }
+  .project-tagline {
+    font-size: 13pt;
+    font-style: italic;
+    color: #0284c7;
+    font-weight: 600;
+    margin-bottom: 25px;
+  }
+  .doc-type {
+    font-size: 14pt;
+    font-weight: 800;
+    color: #334155;
+    letter-spacing: 1.5px;
+    border-top: 1px solid #cbd5e1;
+    border-bottom: 1px solid #cbd5e1;
+    padding: 10px 0;
+    display: inline-block;
+    width: 80%;
+  }
+
+  .meta-grid {
+    display: flex;
+    justify-content: space-between;
+    text-align: left;
+    margin: 30px 20px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 18px 24px;
+  }
+  .meta-col {
+    width: 48%;
+  }
+  .meta-col h4 {
+    margin: 0 0 8px 0;
+    font-size: 10pt;
+    color: #0369a1;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid #cbd5e1;
+    padding-bottom: 4px;
+  }
+  .meta-col p {
+    margin: 4px 0;
+    font-size: 9.5pt;
+  }
+
+  .cover-footer {
+    font-size: 9pt;
+    color: #64748b;
+    border-top: 1px solid #e2e8f0;
+    padding-top: 15px;
+  }
+
+  /* Headings */
+  h1 {
+    font-size: 16pt;
+    font-weight: 800;
+    color: #0369a1;
+    border-bottom: 2px solid #0284c7;
+    padding-bottom: 6px;
+    margin-top: 30px;
+    margin-bottom: 14px;
+    page-break-before: always;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .cover-page + h1 {
+    page-break-before: avoid;
+  }
+  h2 {
+    font-size: 12.5pt;
+    font-weight: 800;
+    color: #0f172a;
+    border-left: 4px solid #0284c7;
+    padding-left: 8px;
+    margin-top: 22px;
+    margin-bottom: 10px;
+  }
+  h3 {
+    font-size: 11pt;
+    font-weight: 700;
+    color: #334155;
+    margin-top: 16px;
+    margin-bottom: 8px;
+  }
+  h4 {
+    font-size: 10pt;
+    font-weight: 700;
+    color: #475569;
+    margin-top: 12px;
+    margin-bottom: 6px;
+  }
+
+  p {
+    margin: 0 0 10px 0;
+    text-align: justify;
+  }
+
+  ul, ol {
+    margin: 0 0 12px 0;
+    padding-left: 24px;
+  }
+  li {
+    margin-bottom: 4px;
+    text-align: justify;
+  }
+
+  /* Tables */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0 18px 0;
+    font-size: 9pt;
+  }
+  th {
+    background: #f1f5f9;
+    color: #0f172a;
+    font-weight: 700;
+    text-align: left;
+    padding: 8px 10px;
+    border: 1px solid #cbd5e1;
+  }
+  td {
+    padding: 7px 10px;
+    border: 1px solid #e2e8f0;
+    vertical-align: top;
+  }
+  tr:nth-child(even) td {
+    background: #f8fafc;
+  }
+
+  /* Callouts & Highlights */
+  .callout {
+    background: #f0f9ff;
+    border-left: 4px solid #0284c7;
+    padding: 10px 14px;
+    border-radius: 4px;
+    margin: 12px 0;
+    font-size: 9.5pt;
+  }
+  .callout-warning {
+    background: #fffbeb;
+    border-left: 4px solid #f59e0b;
+    padding: 10px 14px;
+    border-radius: 4px;
+    margin: 12px 0;
+    font-size: 9.5pt;
+  }
+  .callout-success {
+    background: #ecfdf5;
+    border-left: 4px solid #10b981;
+    padding: 10px 14px;
+    border-radius: 4px;
+    margin: 12px 0;
+    font-size: 9.5pt;
+  }
+
+  .badge {
+    display: inline-block;
+    padding: 2px 7px;
+    font-size: 7.5pt;
+    font-weight: 800;
+    border-radius: 4px;
+    text-transform: uppercase;
+  }
+  .badge-high { background: #fee2e2; color: #991b1b; }
+  .badge-med { background: #fef3c7; color: #92400e; }
+  .badge-low { background: #e0f2fe; color: #075985; }
+
+  /* Priority Ratings Matrix */
+  .priority-rating {
+    font-family: monospace;
+    font-size: 8.5pt;
+    color: #475569;
+  }
+
+  /* Code & Syntax */
+  code {
+    font-family: 'Consolas', 'Courier New', monospace;
+    background: #f1f5f9;
+    padding: 2px 5px;
+    border-radius: 4px;
+    font-size: 8.5pt;
+    color: #0f172a;
+  }
+
+  /* Sequence Box */
+  .seq-box {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 10px 14px;
+    margin: 8px 0 14px 0;
+  }
+  .seq-step {
+    margin-bottom: 6px;
+    font-size: 9pt;
+  }
+  .seq-step strong {
+    color: #0369a1;
+  }
+
+  /* TOC */
+  .toc-table {
+    width: 100%;
+    margin-top: 15px;
+  }
+  .toc-table td {
+    border: none;
+    padding: 5px 0;
+    font-size: 9.5pt;
+  }
+  .toc-dots {
+    border-bottom: 1px dotted #94a3b8;
+    width: 100%;
+  }
+  .toc-page {
+    text-align: right;
+    font-weight: 700;
+    color: #0369a1;
+  }
+</style>
+</head>
+<body>
+
+<!-- COVER PAGE -->
+<div class="cover-page">
+  <div class="univ-header">
+    <div class="univ-name">Medi-Caps University, Indore</div>
+    <div class="univ-sub">Faculty of Engineering | Department of Computer Science & Engineering</div>
+    <div class="univ-sub" style="color: #64748b; font-size: 9pt; margin-top: 2px;">A.B. Road, Pigdamber, Rau, Indore, Madhya Pradesh - 453331</div>
+  </div>
+
+  <div class="doc-title-box">
+    <div class="project-badge">Major Project Specification &bull; B.Tech CSE (2025–2026)</div>
+    <div class="project-title">HEAL FROM HOME</div>
+    <div class="project-tagline">&ldquo;Intelligent Post-Discharge Care Companion &bull; Safe Healing Beyond Hospital Walls&rdquo;</div>
+    <div class="doc-type">SOFTWARE REQUIREMENTS SPECIFICATION (SRS)</div>
+  </div>
+
+  <div class="meta-grid">
+    <div class="meta-col">
+      <h4>Submitted By (Project Team):</h4>
+      <p><strong>CHAYAN JAIN</strong> (Enrollment: EN23CS301274)</p>
+      <p><strong>DAKSH SETHI</strong> (Enrollment: EN23CS301286)</p>
+      <p><strong>DAKSH MANGAL</strong> (Enrollment: EN23CS301285)</p>
+      <p style="margin-top: 8px; font-size: 8.5pt; color: #64748b;">Degree: Bachelor of Technology (B.Tech)<br>Branch: Computer Science & Engineering</p>
+    </div>
+    <div class="meta-col">
+      <h4>Under the Guidance of:</h4>
+      <p><strong>MS. MITUSHI SONI MA'AM</strong></p>
+      <p>Assistant Professor</p>
+      <p>Department of Computer Science & Engineering</p>
+      <p>Faculty of Engineering, Medi-Caps University</p>
+      <p style="margin-top: 8px; font-size: 8.5pt; color: #64748b;">Academic Session: 2025–2026<br>Document Version: 1.0 (Final Approved)</p>
+    </div>
+  </div>
+
+  <div class="cover-footer">
+    <strong>Confidentiality & Academic Notice:</strong> This Software Requirements Specification (SRS) is prepared in compliance with IEEE Std 830-1998 standards for academic evaluation and engineering review at Medi-Caps University. All rights reserved &copy; 2026.
+  </div>
+</div>
+
+<!-- DOCUMENT CONTROL -->
+<h1 style="page-break-before: always;">Document Control & Executive Summary</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th style="width: 25%;">Attribute</th>
+      <th>Specification Details</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Document Title</strong></td>
+      <td>Software Requirements Specification (SRS) for "Heal From Home"</td>
+    </tr>
+    <tr>
+      <td><strong>Product Name</strong></td>
+      <td>Heal From Home: Intelligent Post-Discharge Care Companion</td>
+    </tr>
+    <tr>
+      <td><strong>Document Identifier</strong></td>
+      <td>HFH-SRS-V1.0-MEDICAPS</td>
+    </tr>
+    <tr>
+      <td><strong>Revision / Release</strong></td>
+      <td>Release 1.0 (Production Candidate)</td>
+    </tr>
+    <tr>
+      <td><strong>Status</strong></td>
+      <td>Final Approved for Engineering Implementation</td>
+    </tr>
+    <tr>
+      <td><strong>Target Audience</strong></td>
+      <td>Project Guides, Evaluators, Engineering Development Team, QA Team, Clinical Advisors</td>
+    </tr>
+    <tr>
+      <td><strong>Software Architecture</strong></td>
+      <td>Decoupled 3-Tier Web Architecture (React 18 SPA + Node.js/Express REST API + MongoDB Atlas + Groq LPU LLM)</td>
+    </tr>
+    <tr>
+      <td><strong>Repository</strong></td>
+      <td><code>https://github.com/chayanjain28/Heal-FH.git</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>Revision History</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Version</th>
+      <th>Date</th>
+      <th>Author(s)</th>
+      <th>Description of Major Changes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0.1</td>
+      <td>10-Oct-2025</td>
+      <td>Chayan Jain, Daksh Sethi</td>
+      <td>Initial requirements gathering, clinical literature survey, and stakeholder interviews.</td>
+    </tr>
+    <tr>
+      <td>0.5</td>
+      <td>02-Nov-2025</td>
+      <td>Team Heal From Home</td>
+      <td>Drafted functional specifications for MedAI companion, vital telemetry, and medication engine.</td>
+    </tr>
+    <tr>
+      <td>0.9</td>
+      <td>17-Nov-2026</td>
+      <td>Team Heal From Home</td>
+      <td>Added automated discharge report processing, 1-Click 108 SOS dispatch, and calming UI requirements.</td>
+    </tr>
+    <tr>
+      <td>1.0</td>
+      <td>19-Nov-2026</td>
+      <td>Chayan Jain</td>
+      <td>Final IEEE 830-compliant SRS with complete REQ matrices, ER models, security & project plan.</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- TABLE OF CONTENTS -->
+<h2>Table of Contents</h2>
+<table class="toc-table">
+  <tr><td><strong>1. Introduction</strong></td><td class="toc-page">Page 3</td></tr>
+  <tr><td style="padding-left: 20px;">1.1 Purpose</td><td class="toc-page">3</td></tr>
+  <tr><td style="padding-left: 20px;">1.2 Document Conventions</td><td class="toc-page">3</td></tr>
+  <tr><td style="padding-left: 20px;">1.3 Intended Audience and Reading Suggestions</td><td class="toc-page">4</td></tr>
+  <tr><td style="padding-left: 20px;">1.4 Product Scope</td><td class="toc-page">4</td></tr>
+  <tr><td><strong>2. Overall Description</strong></td><td class="toc-page">Page 5</td></tr>
+  <tr><td style="padding-left: 20px;">2.1 Product Perspective & Context</td><td class="toc-page">5</td></tr>
+  <tr><td style="padding-left: 20px;">2.2 Product Functions (Core Capabilities)</td><td class="toc-page">6</td></tr>
+  <tr><td style="padding-left: 20px;">2.3 User Classes and Characteristics</td><td class="toc-page">7</td></tr>
+  <tr><td style="padding-left: 20px;">2.4 Operating Environment</td><td class="toc-page">7</td></tr>
+  <tr><td style="padding-left: 20px;">2.5 Design and Implementation Constraints</td><td class="toc-page">8</td></tr>
+  <tr><td style="padding-left: 20px;">2.6 User Documentation Deliverables</td><td class="toc-page">8</td></tr>
+  <tr><td style="padding-left: 20px;">2.7 Assumptions and Dependencies</td><td class="toc-page">9</td></tr>
+  <tr><td><strong>3. External Interface Requirements</strong></td><td class="toc-page">Page 10</td></tr>
+  <tr><td style="padding-left: 20px;">3.1 User Interfaces (UI/UX Principles & Screens)</td><td class="toc-page">10</td></tr>
+  <tr><td style="padding-left: 20px;">3.2 Hardware Interfaces & Medical Telemetry</td><td class="toc-page">11</td></tr>
+  <tr><td style="padding-left: 20px;">3.3 Software Interfaces & API Services</td><td class="toc-page">11</td></tr>
+  <tr><td style="padding-left: 20px;">3.4 Communications Interfaces & Protocols</td><td class="toc-page">12</td></tr>
+  <tr><td><strong>4. System Features (Functional Requirements)</strong></td><td class="toc-page">Page 13</td></tr>
+  <tr><td style="padding-left: 20px;">4.1 Feature 1 – User Authentication & Role-Based Access Control (RBAC)</td><td class="toc-page">13</td></tr>
+  <tr><td style="padding-left: 20px;">4.2 Feature 2 – AI Discharge Report Automation & Multi-Format Parsing</td><td class="toc-page">14</td></tr>
+  <tr><td style="padding-left: 20px;">4.3 Feature 3 – Dynamic Personalized Recovery Plan & Milestone Engine</td><td class="toc-page">15</td></tr>
+  <tr><td style="padding-left: 20px;">4.4 Feature 4 – Health Vitals Logging, Telemetry & Anomaly Detection</td><td class="toc-page">16</td></tr>
+  <tr><td style="padding-left: 20px;">4.5 Feature 5 – Clinical Safety Drug-Drug & Food-Drug Interaction Engine</td><td class="toc-page">17</td></tr>
+  <tr><td style="padding-left: 20px;">4.6 Feature 6 – 1-Click Emergency SOS & Caregiver Escalation Protocol</td><td class="toc-page">18</td></tr>
+  <tr><td style="padding-left: 20px;">4.7 Feature 7 – Doctor/Care Team Clinical Dashboard & Triage Review</td><td class="toc-page">19</td></tr>
+  <tr><td style="padding-left: 20px;">4.8 Feature 8 – Interactive MedAI Conversational Clinical Companion</td><td class="toc-page">20</td></tr>
+  <tr><td><strong>5. Non-Functional Requirements</strong></td><td class="toc-page">Page 21</td></tr>
+  <tr><td style="padding-left: 20px;">5.1 Performance Requirements</td><td class="toc-page">21</td></tr>
+  <tr><td style="padding-left: 20px;">5.2 Safety Requirements</td><td class="toc-page">21</td></tr>
+  <tr><td style="padding-left: 20px;">5.3 Security Requirements</td><td class="toc-page">22</td></tr>
+  <tr><td style="padding-left: 20px;">5.4 Software Quality Attributes</td><td class="toc-page">22</td></tr>
+  <tr><td><strong>6. Project Plan & Implementation Timeline</strong></td><td class="toc-page">Page 23</td></tr>
+  <tr><td style="padding-left: 20px;">6.1 Team Members & Governance</td><td class="toc-page">23</td></tr>
+  <tr><td style="padding-left: 20px;">6.2 Division of Work Matrix</td><td class="toc-page">23</td></tr>
+  <tr><td style="padding-left: 20px;">6.3 Time Schedule & Sprints (8-Week Roadmap)</td><td class="toc-page">24</td></tr>
+  <tr><td><strong>7. Appendix A: Comprehensive Glossary</strong></td><td class="toc-page">Page 25</td></tr>
+  <tr><td><strong>8. Appendix B: To Be Determined (TBD) List</strong></td><td class="toc-page">Page 26</td></tr>
+</table>
+
+<!-- SECTION 1: INTRODUCTION -->
+<h1>1. Introduction</h1>
+
+<h2>1.1 Purpose</h2>
+<p>
+This Software Requirements Specification (SRS) establishes the complete, authoritative, and verifiable functional and non-functional requirements for <strong>"Heal From Home" (Release 1.0)</strong> — an intelligent, full-stack, AI-powered post-discharge recovery companion and remote patient monitoring platform. 
+</p>
+<p>
+The core scope encompassed by this specification spans the end-to-end post-hospitalization lifecycle: from the ingestion and automated parsing of clinical discharge summaries, down through personalized daily recovery roadmap generation, dynamic vital telemetry tracking, automated drug-drug and food-drug interaction screening, bi-directional doctor-patient triage communication, emergency 1-click SOS escalation, and continuous compassionate conversational guidance powered by large language models.
+</p>
+<p>
+This document constitutes the technical baseline contract between the academic supervisors at Medi-Caps University, clinical domain advisors, quality assurance personnel, and the engineering development team. All architectural implementations, system validations, and formal acceptance tests shall be executed against the specifications defined herein.
+</p>
+
+<h2>1.2 Document Conventions</h2>
+<p>
+This document adheres rigorously to the <strong>IEEE Std 830-1998 Recommended Practice for Software Requirements Specifications</strong>. Throughout this document, the following typographical and semantic conventions are applied:
+</p>
+<ul>
+  <li><strong>Requirement Identifiers:</strong> Every verifiable functional requirement is uniquely designated using the format <code>REQ-XXX</code>, where <code>XXX</code> represents an ascending 3-digit serial number grouped logically by system feature.</li>
+  <li><strong>Priority Scale:</strong> Requirements are categorized using a 4-dimensional priority rating matrix:
+    <ul>
+      <li><strong>Benefit:</strong> Value delivered to patient/clinician (Scale: 1 to 9).</li>
+      <li><strong>Penalty:</strong> Adverse impact if the requirement is omitted (Scale: 1 to 9).</li>
+      <li><strong>Cost:</strong> Development effort and architectural complexity (Scale: 1 to 9).</li>
+      <li><strong>Risk:</strong> Implementation volatility or technological uncertainty (Scale: 1 to 9).</li>
+      <li><strong>Categorical Priority:</strong> Derived classification assigned as <span class="badge badge-high">HIGH</span> (Mandatory for core clinical workflow), <span class="badge badge-med">MEDIUM</span> (Important clinical enhancement), or <span class="badge badge-low">LOW</span> (Desirable future enhancement).</li>
+    </ul>
+  </li>
+  <li><strong>Typography:</strong> Source code entities, endpoints, and database fields are styled in <code>monospace</code>. Key clinical terms and safety guardrails are marked in <strong>bold text</strong>.</li>
+</ul>
+
+<h2>1.3 Intended Audience and Reading Suggestions</h2>
+<p>
+This specification is designed for diverse stakeholders, each having distinct technical perspectives:
+</p>
+<table>
+  <thead>
+    <tr>
+      <th style="width: 25%;">Audience Category</th>
+      <th style="width: 35%;">Key Areas of Focus</th>
+      <th>Suggested Reading Sequence</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Academic Evaluators & Project Guides</strong></td>
+      <td>Project vision, clinical innovation, mathematical/AI validation, project timeline, and academic deliverables.</td>
+      <td>Section 1 &rarr; Section 2 &rarr; Section 4 (Overview) &rarr; Section 6 &rarr; Appendices.</td>
+    </tr>
+    <tr>
+      <td><strong>Software Developers (Frontend & Backend)</strong></td>
+      <td>Detailed functional requirements (REQ-001 to REQ-080), data schemas, API interfaces, stimulus/response flows.</td>
+      <td>Section 2 &rarr; Section 3 &rarr; Section 4 (All REQs) &rarr; Section 5 &rarr; Appendix A.</td>
+    </tr>
+    <tr>
+      <td><strong>Quality Assurance & Testing Engineers</strong></td>
+      <td>Acceptance criteria, boundary conditions, edge cases, error handling, and non-functional metric thresholds.</td>
+      <td>Section 1.2 &rarr; Section 4 (Functional Tables) &rarr; Section 5 (All Quality Benchmarks).</td>
+    </tr>
+    <tr>
+      <td><strong>Clinical Advisors & Healthcare Stakeholders</strong></td>
+      <td>Patient safety guardrails, drug interaction logic, clinical workflow fidelity, and medical disclaimers.</td>
+      <td>Section 1.4 &rarr; Section 2.1 &rarr; Section 4.2 &rarr; Section 4.5 &rarr; Section 5.2.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>1.4 Product Scope</h2>
+<p>
+Hospital discharge represents the most vulnerable transition in modern healthcare. Studies published in the <em>New England Journal of Medicine</em> and <em>The Lancet</em> document that nearly <strong>19.6% of post-operative patients experience an adverse clinical event within 30 days of returning home</strong>, with over 60% of these incidents stemming from medication mismanagement, misunderstood discharge instructions, delayed recognition of physiological complications, or anxiety-induced isolation.
+</p>
+<p>
+<strong>Heal From Home</strong> addresses this systemic void by acting as an always-accessible, intelligent digital bridge between the hospital ward and the patient's bedroom.
+</p>
+<div class="callout-success">
+  <strong>Primary Clinical & Operational Objectives:</strong>
+  <ul>
+    <li><strong>Curtail 30-Day Preventable Readmissions:</strong> Lower post-surgical emergency department bounce-backs by 35% to 45% through continuous vital telemetry and early anomaly detection.</li>
+    <li><strong>Eliminate Medical Jargon Confusion:</strong> Instantly convert complex hospital discharge summaries into plain-English, anxiety-reducing, step-by-step daily recovery protocols.</li>
+    <li><strong>Ensure 100% Medication Adherence & Clinical Safety:</strong> Screen every prescribed drug against the patient's regimen for adverse drug-drug interactions and food contraindications (e.g., Statin & Grapefruit CYP3A4 toxicity).</li>
+    <li><strong>Provide 1-Click Emergency Escalation:</strong> Empower distressed patients with a 1-tap 108 emergency ambulance dialer and automated SOS triage transmission to designated caregivers and doctors.</li>
+  </ul>
+</div>
+
+<!-- SECTION 2: OVERALL DESCRIPTION -->
+<h1>2. Overall Description</h1>
+
+<h2>2.1 Product Perspective & Context</h2>
+<p>
+Heal From Home is a modern, self-contained, cloud-hosted Remote Patient Management System (RPMS) and clinical decision-support ecosystem. Unlike legacy hospital portals that serve merely as static PDF repositories, Heal From Home is dynamic, responsive, and bidirectional:
+</p>
+<div class="seq-box">
+  <div style="font-weight: 800; color: #0369a1; margin-bottom: 8px;">HEAL FROM HOME ARCHITECTURAL ECOSYSTEM:</div>
+  <div class="seq-step">&bull; <strong>Patient Edge Layer:</strong> Responsive React 18 Single-Page Application (SPA) supporting desktop browsers, tablets, and smartphones, engineered with calming color psychology and accessible touch-first targets.</div>
+  <div class="seq-step">&bull; <strong>Clinical API Gateway:</strong> High-throughput Node.js / Express micro-framework with JWT authentication, cryptographic password hashing, strict helmet security headers, and rate limiting.</div>
+  <div class="seq-step">&bull; <strong>Intelligence Layer (MedAI):</strong> High-speed Groq LPU (Language Processing Unit) inference pipeline utilizing modern foundational clinical models (Qwen-2.5-32B / LLaMA-3.3-70B) for zero-latency medical reasoning and automated JSON extraction.</div>
+  <div class="seq-step">&bull; <strong>Persistence & Telemetry Store:</strong> MongoDB Atlas clustered document database storing patient profiles, time-series health logs, multi-dose medication schedules, and clinical report analyses.</div>
+</div>
+
+<h2>2.2 Product Functions (Core Capabilities)</h2>
+<p>
+The system executes eight primary functional subsystems:
+</p>
+<ol>
+  <li><strong>Secure Multi-Role Authentication:</strong> Granular Role-Based Access Control (RBAC) separating Patient, Doctor, and Administrative privilege levels with stateless JWT tokens.</li>
+  <li><strong>Automated Discharge Document OCR & Parsing:</strong> Intelligent document ingestion supporting multi-page PDF files and pasted summaries; parses clinical text into structured JSON entities without manual transcription.</li>
+  <li><strong>Personalized Recovery Pathway Engine:</strong> Dynamically generates phase-based recovery roadmaps (Acute, Subacute, Reconditioning) tailored to specific surgical procedures (Cardiac CABG/Stents, Orthopedic Arthroplasty, Abdominal Surgery).</li>
+  <li><strong>Time-Series Health Telemetry & Anomaly Alerts:</strong> Captures heart rate, blood pressure, oxygen saturation (SpO2), temperature, blood glucose, pain levels (0–10 scale), and mood; performs automated range-validation and triggers clinical alerts when vital signs cross critical safety thresholds.</li>
+  <li><strong>Automated Pharmacological Safety Checker:</strong> Analyzes prescribed regimens for severe drug-drug interactions, food conflicts, and provides vital-dependent hold instructions (e.g., hold beta-blockers if resting HR &lt; 55 bpm).</li>
+  <li><strong>1-Click Emergency SOS & Triage Dispatch:</strong> Telephony integration initiating direct 108/112 ambulance calls while simultaneously copying a structured emergency vital summary and alerting primary caregivers.</li>
+  <li><strong>Doctor Clinical Review & Patient Monitoring:</strong> High-density clinical view for attending physicians to inspect patient recovery scores, vital trend charts, report uploads, and triage urgency.</li>
+  <li><strong>MedAI Interactive 24/7 Care Assistant:</strong> Empathetic conversational clinical companion available around the clock to answer post-care questions, explain lab results, and provide compassionate recovery reassurance.</li>
+</ol>
+
+<h2>2.3 User Classes and Characteristics</h2>
+<table>
+  <thead>
+    <tr>
+      <th>User Class</th>
+      <th>Key Responsibilities & Operational Context</th>
+      <th>Technical Expertise</th>
+      <th>Privilege Level</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Post-Surgical Patient (Primary)</strong></td>
+      <td>Undergoing at-home rehabilitation. Logs daily vitals, checks off recovery tasks, takes medications, consults MedAI, and uses SOS when distressed. May suffer from fatigue or mild cognitive strain.</td>
+      <td>Low to Moderate (Familiar with standard consumer mobile/web applications).</td>
+      <td><strong>Patient:</strong> Restricted strictly to own personal medical records, health logs, and chat history.</td>
+    </tr>
+    <tr>
+      <td><strong>Family Caregiver / Kin</strong></td>
+      <td>Assists elderly or recovering family members. Monitors daily task completion, ensures medication compliance, and receives emergency alerts.</td>
+      <td>Low to Moderate.</td>
+      <td><strong>Caregiver:</strong> Read-and-log proxy access linked to designated patient account.</td>
+    </tr>
+    <tr>
+      <td><strong>Attending Doctor / Surgeon</strong></td>
+      <td>Reviews patient recovery cohorts, evaluates vitals trends, approves or modifies medication regimens, and reviews emergency escalations.</td>
+      <td>High (Clinical domain expert; requires rapid, high-density data visualization).</td>
+      <td><strong>Doctor:</strong> Multi-patient cohort read/write access for assigned patients; ability to prescribe and adjust plans.</td>
+    </tr>
+    <tr>
+      <td><strong>System Administrator</strong></td>
+      <td>Oversees platform operations, monitors server uptime, manages user credentials, and audits clinical safety logs.</td>
+      <td>High (System engineering, database administration, and DevOps proficiency).</td>
+      <td><strong>Administrator:</strong> Full system access, audit logs, and operational configuration.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>2.4 Operating Environment</h2>
+<ul>
+  <li><strong>Client-Side Environment:</strong>
+    <ul>
+      <li>Modern evergreen web browsers: Google Chrome 100+, Mozilla Firefox 100+, Microsoft Edge 100+, Safari 15+.</li>
+      <li>Responsive viewports: 360px (mobile handsets) to 2560px (ultra-wide desktop displays).</li>
+      <li>Hardware: Any consumer desktop, laptop, tablet, or smartphone equipped with camera/file storage.</li>
+    </ul>
+  </li>
+  <li><strong>Server-Side Environment:</strong>
+    <ul>
+      <li>Runtime: Node.js version 18.x or 20.x LTS / Node 24.x compatible.</li>
+      <li>Web Server Framework: Express.js 4.18+ configured with <code>helmet</code> security headers and <code>cors</code> middleware.</li>
+      <li>Host OS: Linux (Ubuntu 22.04 LTS / Debian 12 recommended) or Windows Server 2022.</li>
+    </ul>
+  </li>
+  <li><strong>Database Layer:</strong> MongoDB Atlas Cluster (v7.0+), supporting Mongoose Object-Document Mapping (ODM), replica-set high availability, and SSL/TLS encrypted connections.</li>
+  <li><strong>AI Hardware Acceleration:</strong> Groq Cloud LPU (Language Processing Unit) infrastructure delivering sustained inference speeds exceeding 300 tokens/sec.</li>
+</ul>
+
+<h2>2.5 Design and Implementation Constraints</h2>
+<div class="callout-warning">
+  <strong>Key Architectural & Regulatory Constraints:</strong>
+  <ul>
+    <li><strong>Clinical Safety Disclaimer Constraint:</strong> The software acts as an informational care companion and <em>never</em> provides definitive clinical diagnoses or replaces emergency hospital triage. Every AI response must mandate doctor consultation for acute symptoms.</li>
+    <li><strong>Data Protection & Regulatory Compliance:</strong> Architecture must align with the principles of the <strong>Digital Personal Data Protection Act (DPDPA 2023)</strong> and HIPAA privacy rules regarding Protected Health Information (PHI). Passwords must be hashed with bcrypt (salt factor &ge; 10); API communications must enforce TLS 1.3.</li>
+    <li><strong>Inference Latency Constraint:</strong> All AI-driven document analyses and chat responses must return within 3.5 seconds to prevent patient abandonment.</li>
+    <li><strong>Stateless Micro-Services Architecture:</strong> Server nodes must remain completely stateless; session state is maintained entirely via signed JWT tokens to allow seamless horizontal scaling.</li>
+  </ul>
+</div>
+
+<h2>2.6 User Documentation Deliverables</h2>
+<ol>
+  <li><strong>Patient Onboarding & Quick-Start Guide (PDF):</strong> Step-by-step illustrated booklet explaining how to upload discharge summaries, log morning vitals, and set medication alarms.</li>
+  <li><strong>Clinician Portal User Manual:</strong> Guide for doctors explaining patient cohort filtering, vital anomaly triaging, and recovery plan customization.</li>
+  <li><strong>Interactive In-App Product Tour:</strong> Dynamic guided walkthrough on first login highlighting key dashboard components.</li>
+  <li><strong>OpenAPI / Swagger API Specification:</strong> Machine-readable and interactive API documentation for system integrators.</li>
+</ol>
+
+<h2>2.7 Assumptions and Dependencies</h2>
+<ul>
+  <li><strong>Connectivity Assumption:</strong> Patients possess an active broadband, 4G, or 5G internet connection (&ge; 512 Kbps) to synchronize vital records and receive AI updates.</li>
+  <li><strong>Hardware Independence:</strong> The system assumes manual or semi-automated vital entry; no mandatory proprietary hardware locks are enforced. Standard commercial pulse oximeters and BP cuffs are fully supported.</li>
+  <li><strong>Third-Party Dependencies:</strong> Continuous operational availability of MongoDB Atlas cloud database, Groq Cloud LLM API, and standard Node Package Manager (npm) repositories.</li>
+</ul>
+
+<!-- SECTION 3: EXTERNAL INTERFACE REQUIREMENTS -->
+<h1>3. External Interface Requirements</h1>
+
+<h2>3.1 User Interfaces (UI/UX Design Standards)</h2>
+<p>
+The user interface is intentionally engineered according to modern <strong>Evidence-Based Design (EBD)</strong> and healthcare color psychology to alleviate post-surgical anxiety:
+</p>
+<ul>
+  <li><strong>Calming Therapeutic Color Palette:</strong>
+    <ul>
+      <li><strong>Ocean & Sky Blue (<code>#0284c7</code>, <code>#0ea5e9</code>, <code>#f0f9ff</code>):</strong> Instills trust, clinical authority, and emotional stability.</li>
+      <li><strong>Restorative Mint & Sage Green (<code>#10b981</code>, <code>#059669</code>, <code>#ecfdf5</code>):</strong> Signifies recovery, safety, vitality, and successful task completion.</li>
+      <li><strong>Warm Clean Neutrals (<code>#f8fafc</code>, <code>#ffffff</code>, <code>#e2e8f0</code>):</strong> Clean background canvas reducing ocular fatigue.</li>
+      <li><strong>Critical Emergency Red (<code>#ef4444</code>, <code>#fef2f2</code>):</strong> Reserved exclusively for emergency alerts, abnormal vitals, and SOS triggers.</li>
+    </ul>
+  </li>
+  <li><strong>Accessibility (WCAG 2.1 Level AA):</strong> High visual contrast ratios (&ge; 4.5:1 for body text, &ge; 3:1 for large headers), scalable typography, and clear semantic landmarks.</li>
+  <li><strong>Key Screen Layouts:</strong>
+    <ul>
+      <li><strong>Landing Page:</strong> Features the interactive live Recovery Companion simulator, Care Pathways explorer, and AI Report Simplifier sandbox.</li>
+      <li><strong>Patient Dashboard:</strong> Features circular 0–100 Recovery Score gauge, 1-Click 108 Emergency banner, today's medication checklist, and interactive vitals trend chart.</li>
+      <li><strong>Discharge Automation Modal:</strong> Drag-and-drop PDF uploader, pasted text input, and side-by-side parsed clinical entity review.</li>
+      <li><strong>Doctor Portal:</strong> Patient cohort roster with triage priority badges (Critical, Monitor, Stable).</li>
+    </ul>
+  </li>
+</ul>
+
+<h2>3.2 Hardware Interfaces & Medical Telemetry</h2>
+<p>
+The system interfaces logically with consumer and clinical-grade medical peripherals:
+</p>
+<table>
+  <thead>
+    <tr>
+      <th>Medical Peripheral</th>
+      <th>Monitored Telemetry Parameter</th>
+      <th>Input Mechanism</th>
+      <th>Validation & Safety Bounds</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Digital Pulse Oximeter</strong></td>
+      <td>Peripheral Blood Oxygen Saturation (SpO2)</td>
+      <td>Numeric form entry / Wearable telemetry</td>
+      <td>Range: 70% to 100%. Alert triggered if SpO2 &lt; 92% (Hypoxia).</td>
+    </tr>
+    <tr>
+      <td><strong>Digital Sphygmomanometer</strong></td>
+      <td>Systolic & Diastolic Blood Pressure (mmHg)</td>
+      <td>Dual numeric entry (e.g., 120 / 80)</td>
+      <td>Range: 60–250 Systolic, 40–150 Diastolic. Alert if BP &gt; 180/110 or &lt; 90/60.</td>
+    </tr>
+    <tr>
+      <td><strong>Photoplethysmography (PPG) / ECG</strong></td>
+      <td>Resting Heart Rate (bpm)</td>
+      <td>Numeric entry / Smartwatch sync</td>
+      <td>Range: 30 to 220 bpm. Critical alert if HR &lt; 50 bpm (Bradycardia) or &gt; 120 bpm (Tachycardia).</td>
+    </tr>
+    <tr>
+      <td><strong>Infrared Thermometer</strong></td>
+      <td>Body Core Temperature (&deg;F / &deg;C)</td>
+      <td>Numeric entry</td>
+      <td>Range: 95.0&deg;F to 106.0&deg;F. Fever alert triggered if Temp &ge; 100.4&deg;F (Infection marker).</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>3.3 Software Interfaces & API Services</h2>
+<ul>
+  <li><strong>Database Management System:</strong> MongoDB Atlas accessed via Mongoose 8.x ODM with connection pooling, automatic index optimization, and JSON schema validation.</li>
+  <li><strong>AI Language Inference Engine:</strong> Groq Cloud Inference API communicating via official <code>groq-sdk</code> over secure HTTPS; models: <code>qwen/qwen3.8-27b</code> or <code>llama-3.3-70b-versatile</code>.</li>
+  <li><strong>Document Parsing Engine:</strong> Server-side <code>pdf-parse</code> binary stream processor extracting raw textual layers from hospital discharge documents.</li>
+  <li><strong>Data Visualization Engine:</strong> <code>Chart.js</code> and <code>react-chartjs-2</code> rendering HTML5 canvas time-series curves with smooth Bezier splines and dynamic vital anomaly fills.</li>
+</ul>
+
+<h2>3.4 Communications Interfaces & Protocols</h2>
+<ul>
+  <li><strong>Transport Security:</strong> All client-to-server and server-to-cloud traffic mandates <strong>HTTPS over TLS 1.3</strong> with strong cipher suites. Unencrypted HTTP is permanently blocked via HSTS.</li>
+  <li><strong>Application Protocol:</strong> RESTful APIs adhering to OpenAPI 3.0 guidelines, consuming and emitting payloads exclusively formatted in <code>application/json</code>.</li>
+  <li><strong>Telephony & SOS Dispatch:</strong> Native <code>tel:108</code> and <code>tel:112</code> protocol handler integration on mobile browsers for instantaneous emergency dispatch.</li>
+</ul>
+
+<!-- SECTION 4: SYSTEM FEATURES -->
+<h1>4. System Features (Functional Requirements)</h1>
+
+<!-- FEATURE 4.1 -->
+<h2>4.1 Feature 1 – User Authentication & Role-Based Access Control (RBAC)</h2>
+<h3>4.1.1 Description and Priority</h3>
+<p>
+Provides identity verification, account registration, credential management, and role-based permissions separating Patients, Doctors, and Administrators.
+</p>
+<p class="priority-rating">Priority: HIGH | Benefit: 9 | Penalty: 9 | Cost: 4 | Risk: 3</p>
+
+<h3>4.1.2 Stimulus / Response Sequences</h3>
+<div class="seq-box">
+  <div class="seq-step"><strong>1. User Action:</strong> Submits registration form with email, password, full name, and role ('patient' or 'doctor').</div>
+  <div class="seq-step"><strong>2. System Response:</strong> Validates email uniqueness, hashes password using bcrypt (salt factor 10), creates database record, and issues signed JWT token.</div>
+  <div class="seq-step"><strong>3. User Action:</strong> Submits login credentials.</div>
+  <div class="seq-step"><strong>4. System Response:</strong> Compares password hash; upon match, returns JWT token (7-day validity) and user profile payload; client stores token in local storage and redirects to respective role dashboard.</div>
+  <div class="seq-step"><strong>5. Error Condition:</strong> If credentials fail, returns HTTP 401 with structured message: <code>{"success": false, "message": "Invalid email or password"}</code>.</div>
+</div>
+
+<h3>4.1.3 Detailed Functional Requirements</h3>
+<table>
+  <thead>
+    <tr>
+      <th style="width: 12%;">REQ ID</th>
+      <th>Requirement Statement</th>
+      <th style="width: 15%;">Priority</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>REQ-001</strong></td>
+      <td>The system shall provide registration endpoints for both Patient and Doctor accounts with mandatory field validation.</td>
+      <td><span class="badge badge-high">HIGH</span></td>
+    </tr>
+    <tr>
+      <td><strong>REQ-002</strong></td>
+      <td>The system shall enforce strong password complexity: minimum 8 characters including at least one digit and one special character.</td>
+      <td><span class="badge badge-high">HIGH</span></td>
+    </tr>
+    <tr>
+      <td><strong>REQ-003</strong></td>
+      <td>All stored passwords shall be cryptographically salted and hashed using bcrypt with a work factor of at least 10 rounds. Plaintext passwords shall never be persisted or logged.</td>
+      <td><span class="badge badge-high">HIGH</span></td>
+    </tr>
+    <tr>
+      <td><strong>REQ-004</strong></td>
+      <td>Upon successful authentication, the system shall generate a signed JSON Web Token (JWT) containing user ID, role, and a maximum expiration of 7 days.</td>
+      <td><span class="badge badge-high">HIGH</span></td>
+    </tr>
+    <tr>
+      <td><strong>REQ-005</strong></td>
+      <td>The system shall validate the JWT on every protected route and enforce strict Role-Based Access Control (RBAC); patients shall be prevented from accessing doctor or admin endpoints.</td>
+      <td><span class="badge badge-high">HIGH</span></td>
+    </tr>
+    <tr>
+      <td><strong>REQ-006</strong></td>
+      <td>The system shall provide a <code>/api/auth/me</code> endpoint to re-hydrate client application state and verify token validity on browser refresh.</td>
+      <td><span class="badge badge-high">HIGH</span></td>
+    </tr>
+    <tr>
+      <td><strong>REQ-007</strong></td>
+      <td>The system shall support secure password update workflows requiring the user's current password for verification.</td>
+      <td><span class="badge badge-med">MEDIUM</span></td>
+    </tr>
+    <tr>
+      <td><strong>REQ-008</strong></td>
+      <td>The system shall terminate user sessions immediately upon client logout by clearing tokens from client storage and invalidating active state.</td>
+      <td><span class="badge badge-high">HIGH</span></td>
+    </tr>
+    <tr>
+      <td><strong>REQ-009</strong></td>
+      <td>Failed login attempts shall be throttled using express-rate-limit to mitigate brute-force attacks (maximum 100 requests per 15 minutes per IP).</td>
+      <td><span class="badge badge-high">HIGH</span></td>
+    </tr>
+    <tr>
+      <td><strong>REQ-010</strong></td>
+      <td>The system shall record a timestamp of the user's last login in the database for auditing and session tracking.</td>
+      <td><span class="badge badge-low">LOW</span></td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- FEATURE 4.2 -->
+<h2>4.2 Feature 2 – AI Discharge Report Automation & Multi-Format Parsing</h2>
+<h3>4.2.1 Description and Priority</h3>
+<p>
+Ingests physical and digital hospital discharge summaries via PDF upload or text pasting. Leverages server-side PDF stream extraction and Groq LPU LLM intelligence to automatically extract diagnoses, medications, dietary restrictions, and warning signs into structured database entities.
+</p>
+<p class="priority-rating">Priority: HIGH | Benefit: 9 | Penalty: 8 | Cost: 6 | Risk: 4</p>
+
+<h3>4.2.2 Stimulus / Response Sequences</h3>
+<div class="seq-box">
+  <div class="seq-step"><strong>1. User Action:</strong> Patient or caregiver opens Discharge Automation Modal, uploads hospital discharge PDF or pastes raw report text, and clicks "Generate Guided Care Pathway".</div>
+  <div class="seq-step"><strong>2. System Response:</strong> Server extracts text via <code>pdf-parse</code>, formats clinical extraction prompt, and dispatches payload to Groq LLM API.</div>
+  <div class="seq-step"><strong>3. System Response:</strong> MedAI returns structured JSON containing parsed medications, recovery phases, food contraindications, and emergency warning signs.</div>
+  <div class="seq-step"><strong>4. User Action:</strong> Patient reviews parsed data in the interactive preview modal and clicks "Approve & Import to My Care Plan".</div>
+  <div class="seq-step"><strong>5. System Response:</strong> Automatically populates Patient's Active Medications collection, generates Recovery Plan, schedules reminders, and displays success toast.</div>
+</div>
+
+<h3>4.2.3 Detailed Functional Requirements</h3>
+<table>
+  <thead>
+    <tr>
+      <th style="width: 12%;">REQ ID</th>
+      <th>Requirement Statement</th>
+      <th style="width: 15%;">Priority</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>REQ-011</strong></td>
+      <td>The system shall accept discharge document uploads in PDF, TXT, and image formats up to 10 MB in file size.</td>
+      <td><span class="badge badge-high">HIGH</span></td>
+    </tr>
+    <tr>
+      <td><strong>REQ-012</strong></td>
+      <td>The backend shall utilize <code>pdf-parse</code> to extract raw text buffers from uploaded PDF files, handling both single-page and multi-page documents.</td>
+      <td><span class="badge badge-high">HIGH</span></td>
+    </tr>
+    <tr>
+      <td><strong>REQ-013</strong></td>
+      <td>The system shall provide a multi-line text input alternative allowing users to paste unformatted discharge summary text directly.</td>
+      <td><span class="badge badge-high">HIGH</span></td>
+    </tr>
+    <tr>
+      <td><strong>REQ-014</strong></td>
+      <td>The AI parsing engine shall extract all prescribed discharge medications, identifying drug trade name, generic chemical name, dosage, frequency, route, and timing instructions.</td>
+      <td><span class="badge badge-high">HIGH</span></td>
+    </tr>
+    <tr>
+      <td><strong>REQ-015</strong></td>
+      <td>The system shall detect primary surgical procedures or medical diagnoses (e.g., CABG, Laparoscopic Cholecystectomy, Knee Arthroplasty) from the discharge text.</td>
+      <td><span class="badge badge-high">HIGH</span></td>
+    </tr>
+    <tr>
+      <td><strong>REQ-016</strong></td>
+      <td>The system shall extract clinical red-flag symptoms and vital warning thresholds specified by the discharging physician.</td>
+      <td><span class="badge badge-high">HIGH</span></td>
+    </tr>
+    <tr>
+      <td><strong>REQ-017</strong></td>
+      <td>The system shall return a structured JSON response matching the canonical Care Pathway schema within 3.5 seconds.</td>
+      <td><span class="badge badge-high">HIGH</span></td>
+    </tr>
+    <tr>
+      <td><strong>REQ-018</strong></td>
+      <td>The frontend shall display an interactive review modal allowing the patient or caregiver to inspect, edit, or confirm parsed data prior to database persistence.</td>
+      <td><span class="badge badge-high">HIGH</span></td>
+    </tr>
+    <tr>
+      <td><strong>REQ-019</strong></td>
+      <td>Upon patient confirmation, the system shall atomically create or update corresponding records in the Medications and RecoveryPlan collections.</td>
+      <td><span class="badge badge-high">HIGH</span></td>
+    </tr>
+    <tr>
+      <td><strong>REQ-020</strong></td>
+      <td>The system shall securely store original uploaded report files in an isolated server directory (<code>/uploads/reports/</code>) and link them to the patient's record.</td>
+      <td><span class="badge badge-med">MEDIUM</span></td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- FEATURE 4.3 -->
+<h2>4.3 Feature 3 – Dynamic Personalized Recovery Plan & Milestone Engine</h2>
+<h3>4.3.1 Description and Priority</h3>
+<p>
+Constructs a phase-based (Acute, Subacute, Reconditioning) daily rehabilitation roadmap based on surgical category, tracking daily tasks, exercise protocols, dietary restrictions, and computing a dynamic 0–100 Recovery Index score.
+</p>
+<p class="priority-rating">Priority: HIGH | Benefit: 9 | Penalty: 8 | Cost: 5 | Risk: 3</p>
+
+<h3>4.3.2 Stimulus / Response Sequences</h3>
+<div class="seq-box">
+  <div class="seq-step"><strong>1. User Action:</strong> Patient logs into dashboard on Day 4 post-discharge.</div>
+  <div class="seq-step"><strong>2. System Response:</strong> Displays today's milestone checklist: morning vitals logging, afternoon gentle walking, wound inspection, and scheduled doses.</div>
+  <div class="seq-step"><strong>3. User Action:</strong> Patient checks off "10-Minute Gentle Walking" and logs morning vitals.</div>
+  <div class="seq-step"><strong>4. System Response:</strong> Dynamically recalculates the Recovery Index score from 72 to 84; updates circular gauge and emits encouraging clinical feedback.</div>
+</div>
+
+<h3>4.3.3 Detailed Functional Requirements</h3>
+<table>
+  <thead>
+    <tr>
+      <th style="width: 12%;">REQ ID</th>
+      <th>Requirement Statement</th>
+      <th style="width: 15%;">Priority</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>REQ-021</strong></td>
+      <td>The system shall maintain recovery plans segmented into distinct clinical phases: Acute (Days 1–7), Subacute (Days 8–21), and Reconditioning (Days 22+).</td>
+      <td><span class="badge badge-high">HIGH</span></td>
+    </tr>
+    <tr>
+      <td><strong>REQ-022</strong></td>
+      <td>The system shall support four specialized surgical care pathways: Cardiac Care, Orthopedic Rehab, Respiratory Care, and General Surgery.</td>
+      <td><span class="badge badge-high">HIGH</span></td>
+    </tr>
+    <tr>
+      <td><strong>REQ-023</strong></td>
+      <td>The system shall compute a real-time Recovery Score (0 to 100) combining task completion rate, vital stability, and symptom severity.</td>
+      <td><span class="badge badge-high">HIGH</span></td>
+    </tr>
+    <tr>
+      <td><strong>REQ-024</strong></td>
+      <td>The Recovery Score gauge shall visually indicate recovery status with distinct color thresholds: Green (&ge; 80: Excellent), Blue (60–79: Stable), Amber (40–59: Caution), Red (&lt; 40: At Risk).</td>
+      <td><span class="badge badge-high">HIGH</span></td>
+    </tr>
+    <tr>
+      <td><strong>REQ-025</strong></td>
+      <td>The system shall display daily rehabilitation goals, physical exercise instructions, and dietary restrictions appropriate to the current recovery day.</td>
+      <td><span class="badge badge-high">HIGH</span></td>
+    </tr>
+    <tr>
+      <td><strong>REQ-026</strong></td>
+      <td>Patients shall be able to mark daily recovery tasks as complete; completion events shall be recorded with timestamps.</td>
+      <td><span class="badge badge-high">HIGH</span></td>
+    </tr>
+    <tr>
+      <td><strong>REQ-027</strong></td>
+      <td>Attending physicians shall have full authorization to modify, append, or approve recovery plan milestones for their assigned patients.</td>
+      <td><span class="badge badge-high">HIGH</span></td>
+    </tr>
+    <tr>
+      <td><strong>REQ-028</strong></td>
+      <td>The system shall generate recovery milestone predictions estimating the expected date of full mobility based on historical logging compliance.</td>
+      <td><span class="badge badge-med">MEDIUM</span></td>
+    </tr>
+    <tr>
+      <td><strong>REQ-029</strong></td>
+      <td>The system shall persist recovery plan historical progress to enable retrospective clinical auditing and progress review.</td>
+      <td><span class="badge badge-med">MEDIUM</span></td>
+    </tr>
+    <tr>
+      <td><strong>REQ-030</strong></td>
+      <td>If a patient logs no activity for 48 consecutive hours, the system shall automatically flag the profile as "Compliance Warning" on the doctor dashboard.</td>
+      <td><span class="badge badge-med">MEDIUM</span></td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- FEATURE 4.4 -->
+<h2>4.4 Feature 4 – Health Vitals Logging, Telemetry & Anomaly Detection</h2>
+<h3>4.4.1 Description and Priority</h3>
+<p>
+Enables patients and caregivers to log quantitative physiological vital signs and subjective symptoms. Performs automated clinical range verification and visually plots multi-day trends with anomaly highlights.
+</p>
+<p class="priority-rating">Priority: HIGH | Benefit: 9 | Penalty: 9 | Cost: 5 | Risk: 4</p>
+
+<h3>4.4.2 Stimulus / Response Sequences</h3>
+<div class="seq-box">
+  <div class="seq-step"><strong>1. User Action:</strong> Patient enters Heart Rate: 125 bpm, SpO2: 89%, Blood Pressure: 145/95 mmHg, and Pain Level: 7/10.</div>
+  <div class="seq-step"><strong>2. System Response:</strong> Validates input; detects severe oxygen desaturation (&lt; 90%) and tachycardia (&gt; 120 bpm); generates High-Priority Clinical Alert in database.</div>
+  <div class="seq-step"><strong>3. System Response:</strong> Immediately displays red emergency advisory banner on patient screen advising medical contact; pushes alert to doctor triage view.</div>
+</div>
+
+<h3>4.4.3 Detailed Functional Requirements</h3>
+<table>
+  <thead>
+    <tr>
+      <th style="width: 12%;">REQ ID</th>
+      <th>Requirement Statement</th>
+      <th style="width: 15%;">Priority</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>REQ-031</strong></td>
+      <td>The system shall provide an intuitive logging form capturing: Heart Rate (bpm), Systolic/Diastolic BP (mmHg), SpO2 (%), Temperature (&deg;F), Blood Glucose (mg/dL), Pain (0–10 scale), and Mood.</td>
+      <td><span class="badge badge-high">HIGH</span></td>
+    </tr>
+    <tr>
+      <td><strong>REQ-032</strong></td>
+      <td>The system shall validate all vital sign inputs against physiological feasibility boundaries prior to submission (e.g., Heart Rate: 30–220, SpO2: 70–100%).</td>
+      <td><span class="badge badge-high">HIGH</span></td>
+    </tr>
+    <tr>
+      <td><strong>REQ-033</strong></td>
+      <td>The system shall execute real-time anomaly detection against established clinical safety rules (e.g., SpO2 &lt; 92%, BP Systolic &gt; 180 or &lt; 90, HR &gt; 120 or &lt; 50).</td>
+      <td><span class="badge badge-high">HIGH</span></td>
+    </tr>
+    <tr>
+      <td><strong>REQ-034</strong></td>
+      <td>Upon detecting an out-of-range vital sign, the system shall automatically create an Alert record with severity categorized as 'critical' or 'warning'.</td>
+      <td><span class="badge badge-high">HIGH</span></td>
+    </tr>
+    <tr>
+      <td><strong>REQ-035</strong></td>
+      <td>The frontend shall render multi-day time-series telemetry charts using Chart.js, plotting vital parameters over 7-day, 14-day, and 30-day windows.</td>
+      <td><span class="badge badge-high">HIGH</span></td>
+    </tr>
+    <tr>
+      <td><strong>REQ-036</strong></td>
+      <td>The telemetry charts shall visually emphasize out-of-range data points with distinct colored markers and tooltip medical explanations.</td>
+      <td><span class="badge badge-med">MEDIUM</span></td>
+    </tr>
+    <tr>
+      <td><strong>REQ-037</strong></td>
+      <td>The system shall compute 7-day rolling vital averages and display directional trend indicators (&uarr; Rising, &darr; Falling, &harr; Stable).</td>
+      <td><span class="badge badge-med">MEDIUM</span></td>
+    </tr>
+    <tr>
+      <td><strong>REQ-038</strong></td>
+      <td>Patients shall be permitted to log qualitative clinical notes accompanying their vital entries (e.g., "Mild surgical site itching, took paracetamol at 14:00").</td>
+      <td><span class="badge badge-med">MEDIUM</span></td>
+    </tr>
+    <tr>
+      <td><strong>REQ-039</strong></td>
+      <td>The system shall calculate an aggregate Pain Index score tracking the trajectory of surgical wound pain over recovery days.</td>
+      <td><span class="badge badge-med">MEDIUM</span></td>
+    </tr>
+    <tr>
+      <td><strong>REQ-040</strong></td>
+      <td>Vitals logging endpoints shall respond within 200 milliseconds under standard network conditions.</td>
+      <td><span class="badge badge-high">HIGH</span></td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- FEATURE 4.5 -->
+<h2>4.5 Feature 5 – Clinical Safety Drug-Drug & Food-Drug Interaction Engine</h2>
+<h3>4.5.1 Description and Priority</h3>
+<p>
+Performs pharmacological safety cross-checks across all active prescriptions and dietary intake, flagging hazardous drug-drug interactions, food contraindications (e.g., Statins and Grapefruit), and vital-dependent dosing hold rules.
+</p>
+<p class="priority-rating">Priority: HIGH | Benefit: 9 | Penalty: 9 | Cost: 5 | Risk: 4</p>
+
+<h3>4.5.2 Stimulus / Response Sequences</h3>
+<div class="seq-box">
+  <div class="seq-step"><strong>1. User Action:</strong> Discharge summary parsed containing Atorvastatin 40mg and Betaloc XR 25mg.</div>
+  <div class="seq-step"><strong>2. System Response:</strong> Pharmacological safety engine evaluates regimen:
+    <br>&bull; Flags critical Food-Drug Conflict: "Strictly avoid grapefruit and grapefruit juice (CYP3A4 inhibition increases statin toxicity risk)".
+    <br>&bull; Flags Vital Guardrail: "Beta-blocker alert: Hold dose and alert doctor if resting heart rate &lt; 55 bpm".</div>
+  <div class="seq-step"><strong>3. System Response:</strong> Displays prominent yellow/red clinical safety warning cards on Dashboard and Medication schedule pages.</div>
+</div>
+
+<h3>4.5.3 Detailed Functional Requirements</h3>
+<table>
+  <thead>
+    <tr>
+      <th style="width: 12%;">REQ ID</th>
+      <th>Requirement Statement</th>
+      <th style="width: 15%;">Priority</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>REQ-041</strong></td>
+      <td>The system shall maintain an active list of all prescribed patient medications including trade name, generic name, dosage, frequency, and administration instructions.</td>
+      <td><span class="badge badge-high">HIGH</span></td>
+    </tr>
+    <tr>
+      <td><strong>REQ-042</strong></td>
+      <td>The system shall perform automated multi-drug interaction screening upon adding or updating any medication in the patient's regimen.</td>
+      <td><span class="badge badge-high">HIGH</span></td>
+    </tr>
+    <tr>
+      <td><strong>REQ-043</strong></td>
+      <td>The system shall identify and flag severe drug-drug interactions (e.g., dual anticoagulant bleeding risks, additive QT prolongation).</td>
+      <td><span class="badge badge-high">HIGH</span></td>
+    </tr>
+    <tr>
+      <td><strong>REQ-044</strong></td>
+      <td>The system shall identify and display food-drug contraindications (e.g., Grapefruit juice with CYP3A4-metabolized statins, high-calcium dairy with fluoroquinolones).</td>
+      <td><span class="badge badge-high">HIGH</span></td>
+    </tr>
+    <tr>
+      <td><strong>REQ-045</strong></td>
+      <td>The system shall attach physiological vital guardrails to sensitive medications (e.g., "Check pulse before taking Metoprolol; hold dose if HR &lt; 55 bpm").</td>
+      <td><span class="badge badge-high">HIGH</span></td>
+    </tr>
+    <tr>
+      <td><strong>REQ-046</strong></td>
+      <td>The system shall calculate daily medication adherence rates (% of scheduled doses checked off on time) and display metrics on the dashboard.</td>
+      <td><span class="badge badge-high">HIGH</span></td>
+    </tr>
+    <tr>
+      <td><strong>REQ-047</strong></td>
+      <td>The system shall display scheduled dosage times with visual status badges: 'Pending', 'Taken', 'Missed', or 'Held'.</td>
+      <td><span class="badge badge-high">HIGH</span></td>
+    </tr>
+    <tr>
+      <td><strong>REQ-048</strong></td>
+      <td>Patients shall be able to mark medications as 'Held' with an optional clinical rationale (e.g., "Heart rate was 51 bpm").</td>
+      <td><span class="badge badge-med">MEDIUM</span></td>
+    </tr>
+    <tr>
+      <td><strong>REQ-049</strong></td>
+      <td>The system shall alert the doctor when a critical medication (e.g., Dual Antiplatelet Therapy) has been missed for two consecutive scheduled doses.</td>
+      <td><span class="badge badge-high">HIGH</span></td>
+    </tr>
+    <tr>
+      <td><strong>REQ-050</strong></td>
+      <td>All pharmacological warnings shall clearly present clinical severity levels (Critical, Moderate, Advisory) with actionable guidance.</td>
+      <td><span class="badge badge-high">HIGH</span></td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- FEATURE 4.6 -->
+<h2>4.6 Feature 6 – 1-Click Emergency SOS & Caregiver Escalation Protocol</h2>
+<h3>4.6.1 Description and Priority</h3>
+<p>
+Provides instantaneous emergency response capabilities. Enables single-tap dialing of national emergency medical services (108/112), automatic compilation and one-click copying of emergency triage vitals, and instant caregiver/doctor SOS notification.
+</p>
+<p class="priority-rating">Priority: HIGH | Benefit: 9 | Penalty: 9 | Cost: 4 | Risk: 2</p>
+
+<h3>4.6.2 Stimulus / Response Sequences</h3>
+<div class="seq-box">
+  <div class="seq-step"><strong>1. User Action:</strong> Patient experiencing severe chest tightness clicks "1-Click 108 Ambulance" button.</div>
+  <div class="seq-step"><strong>2. System Response:</strong> Browser invokes native telephony dialer to <code>tel:108</code>; simultaneously opens Emergency Triage Modal.</div>
+  <div class="seq-step"><strong>3. System Response:</strong> Formats clipboard text with Patient Name, Age, Surgery Type, Procedure Date, Current Medications, and Most Recent Vitals.</div>
+  <div class="seq-step"><strong>4. User Action:</strong> Patient or caregiver clicks "Caregiver SOS Alert".</div>
+  <div class="seq-step"><strong>5. System Response:</strong> Dispatches POST request to <code>/api/alerts/sos</code>; persists critical distress record and alerts designated care contacts.</div>
+</div>
+
+<h3>4.6.3 Detailed Functional Requirements</h3>
+<table>
+  <thead>
+    <tr>
+      <th style="width: 12%;">REQ ID</th>
+      <th>Requirement Statement</th>
+      <th style="width: 15%;">Priority</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>REQ-051</strong></td>
+      <td>The dashboard header and navigation shall display an accessible, persistent "1-Click Emergency (108)" action button visible on all views.</td>
+      <td><span class="badge badge-high">HIGH</span></td>
+    </tr>
+    <tr>
+      <td><strong>REQ-052</strong></td>
+      <td>Clicking the emergency button shall initiate a telephony connection to emergency dispatch (108 in India / configurable emergency number).</td>
+      <td><span class="badge badge-high">HIGH</span></td>
+    </tr>
+    <tr>
+      <td><strong>REQ-053</strong></td>
+      <td>The system shall provide an Emergency Triage Modal summarizing the patient's critical health snapshot: Name, Age, Diagnosis, Surgery Date, Active Meds, and Latest Vitals.</td>
+      <td><span class="badge badge-high">HIGH</span></td>
+    </tr>
+    <tr>
+      <td><strong>REQ-054</strong></td>
+      <td>The Emergency Modal shall include a "1-Click Copy Summary" function copying the formatted medical summary to clipboard for instant WhatsApp/SMS dispatch.</td>
+      <td><span class="badge badge-high">HIGH</span></td>
+    </tr>
+    <tr>
+      <td><strong>REQ-055</strong></td>
+      <td>The system shall provide a dedicated "Caregiver SOS" button dispatching an emergency distress alert via <code>/api/alerts/sos</code>.</td>
+      <td><span class="badge badge-high">HIGH</span></td>
+    </tr>
+    <tr>
+      <td><strong>REQ-056</strong></td>
+      <td>The SOS endpoint shall accept distress rationale and latest vital snapshot, creating a high-priority Alert with status 'dispatched'.</td>
+      <td><span class="badge badge-high">HIGH</span></td>
+    </tr>
+    <tr>
+      <td><strong>REQ-057</strong></td>
+      <td>Emergency alerts shall visually flash a prominent notification on the attending doctor's dashboard.</td>
+      <td><span class="badge badge-high">HIGH</span></td>
+    </tr>
+    <tr>
+      <td><strong>REQ-058</strong></td>
+      <td>The system shall log every SOS trigger event with timestamp, IP address, and vital context for clinical liability auditing.</td>
+      <td><span class="badge badge-high">HIGH</span></td>
+    </tr>
+    <tr>
+      <td><strong>REQ-059</strong></td>
+      <td>The Emergency interface shall feature large touch targets (&ge; 48px height) ensuring usability during acute physical distress.</td>
+      <td><span class="badge badge-high">HIGH</span></td>
+    </tr>
+    <tr>
+      <td><strong>REQ-060</strong></td>
+      <td>Emergency telephone links shall degrade gracefully on desktop environments by displaying the phone number prominently with copy capabilities.</td>
+      <td><span class="badge badge-high">HIGH</span></td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- FEATURE 4.7 -->
+<h2>4.7 Feature 7 – Doctor/Care Team Clinical Dashboard & Triage Review</h2>
+<h3>4.7.1 Description and Priority</h3>
+<p>
+Provides clinicians with an aggregated cohort monitoring portal. Displays patient recovery risk stratification, longitudinal vital trend graphs, medication compliance metrics, and triage management tools.
+</p>
+<p class="priority-rating">Priority: HIGH | Benefit: 9 | Penalty: 8 | Cost: 5 | Risk: 3</p>
+
+<h3>4.7.2 Stimulus / Response Sequences</h3>
+<div class="seq-box">
+  <div class="seq-step"><strong>1. User Action:</strong> Doctor logs into clinical portal.</div>
+  <div class="seq-step"><strong>2. System Response:</strong> Displays cohort table sorted by Clinical Risk Level (Critical &rarr; Warning &rarr; Stable).</div>
+  <div class="seq-step"><strong>3. User Action:</strong> Doctor selects a patient flagged with "Hypoxia Warning (SpO2 90%)".</div>
+  <div class="seq-step"><strong>4. System Response:</strong> Opens patient deep-dive: displays 7-day vital curves, discharge summary, active prescriptions, and alert history.</div>
+  <div class="seq-step"><strong>5. User Action:</strong> Doctor enters clinical note: "Increasing spirometry to hourly; if SpO2 remains &lt; 92%, visit ER."</div>
+  <div class="seq-step"><strong>6. System Response:</strong> Persists clinical note and immediately displays it on the patient's dashboard.</div>
+</div>
+
+<h3>4.7.3 Detailed Functional Requirements</h3>
+<table>
+  <thead>
+    <tr>
+      <th style="width: 12%;">REQ ID</th>
+      <th>Requirement Statement</th>
+      <th style="width: 15%;">Priority</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>REQ-061</strong></td>
+      <td>The system shall provide a dedicated Doctor Dashboard displaying all active patients assigned to the authenticated clinician.</td>
+      <td><span class="badge badge-high">HIGH</span></td>
+    </tr>
+    <tr>
+      <td><strong>REQ-062</strong></td>
+      <td>The patient roster shall display Name, Age, Surgery Type, Post-Op Day, Recovery Score, Adherence %, and Triage Status.</td>
+      <td><span class="badge badge-high">HIGH</span></td>
+    </tr>
+    <tr>
+      <td><strong>REQ-063</strong></td>
+      <td>The system shall categorize patient triage status into: 'Critical' (Active emergency/critical vital), 'Monitor' (Missed meds/caution score), or 'Stable'.</td>
+      <td><span class="badge badge-high">HIGH</span></td>
+    </tr>
+    <tr>
+      <td><strong>REQ-064</strong></td>
+      <td>Doctors shall be able to filter and search their patient cohort by name, surgical pathway, or triage status.</td>
+      <td><span class="badge badge-high">HIGH</span></td>
+    </tr>
+    <tr>
+      <td><strong>REQ-065</strong></td>
+      <td>Clicking any patient shall open a detailed clinical profile displaying comprehensive longitudinal vital charts, recovery timeline, and uploaded reports.</td>
+      <td><span class="badge badge-high">HIGH</span></td>
+    </tr>
+    <tr>
+      <td><strong>REQ-066</strong></td>
+      <td>Doctors shall have the capability to add, adjust, or discontinue medications directly from the patient management view.</td>
+      <td><span class="badge badge-high">HIGH</span></td>
+    </tr>
+    <tr>
+      <td><strong>REQ-067</strong></td>
+      <td>Doctors shall be able to record clinical notes and advice that immediately render on the patient's home dashboard.</td>
+      <td><span class="badge badge-high">HIGH</span></td>
+    </tr>
+    <tr>
+      <td><strong>REQ-068</strong></td>
+      <td>The system shall allow clinicians to acknowledge and resolve active health alerts, logging the resolution timestamp and clinical action taken.</td>
+      <td><span class="badge badge-high">HIGH</span></td>
+    </tr>
+    <tr>
+      <td><strong>REQ-069</strong></td>
+      <td>The system shall support scheduling and tracking post-operative follow-up appointments with status tracking ('Scheduled', 'Completed', 'Cancelled').</td>
+      <td><span class="badge badge-med">MEDIUM</span></td>
+    </tr>
+    <tr>
+      <td><strong>REQ-070</strong></td>
+      <td>Doctor dashboard views shall load cohort rosters within 1.5 seconds for cohorts up to 100 active patients.</td>
+      <td><span class="badge badge-high">HIGH</span></td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- FEATURE 4.8 -->
+<h2>4.8 Feature 8 – Interactive MedAI Conversational Clinical Companion</h2>
+<h3>4.8.1 Description and Priority</h3>
+<p>
+Provides 24/7 conversational assistance through an empathetic, LLM-driven medical chat interface. Answers recovery questions, explains discharge instructions, interprets lab findings, and enforces medical disclaimer guardrails.
+</p>
+<p class="priority-rating">Priority: HIGH | Benefit: 9 | Penalty: 8 | Cost: 5 | Risk: 3</p>
+
+<h3>4.8.2 Stimulus / Response Sequences</h3>
+<div class="seq-box">
+  <div class="seq-step"><strong>1. User Action:</strong> Patient types: "Is it normal to have slight swelling around my knee incision on Day 5?"</div>
+  <div class="seq-step"><strong>2. System Response:</strong> MedAI analyzes query in the context of recent knee arthroplasty; provides empathetic explanation distinguishing expected mild edema from infection markers (erythema, purulent drainage, high fever).</div>
+  <div class="seq-step"><strong>3. System Response:</strong> Suggests non-strenuous elevation; ends with explicit reminder to contact surgeon Dr. Sharma if fever &ge; 100.4&deg;F occurs.</div>
+</div>
+
+<h3>4.8.3 Detailed Functional Requirements</h3>
+<table>
+  <thead>
+    <tr>
+      <th style="width: 12%;">REQ ID</th>
+      <th>Requirement Statement</th>
+      <th style="width: 15%;">Priority</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>REQ-071</strong></td>
+      <td>The system shall provide an interactive conversational chat interface accessible from all patient views via an ambient floating widget.</td>
+      <td><span class="badge badge-high">HIGH</span></td>
+    </tr>
+    <tr>
+      <td><strong>REQ-072</strong></td>
+      <td>The chat backend shall integrate with Groq LPU API utilizing modern open-weights clinical reasoning models (Qwen-2.5-32B or LLaMA-3.3-70B).</td>
+      <td><span class="badge badge-high">HIGH</span></td>
+    </tr>
+    <tr>
+      <td><strong>REQ-073</strong></td>
+      <td>The AI assistant shall maintain multi-turn conversational context by supplying the previous 10 messages in the API request payload.</td>
+      <td><span class="badge badge-high">HIGH</span></td>
+    </tr>
+    <tr>
+      <td><strong>REQ-074</strong></td>
+      <td>The system prompt shall strictly instruct MedAI to communicate with clinical empathy, use patient-friendly language, and avoid medical jargon.</td>
+      <td><span class="badge badge-high">HIGH</span></td>
+    </tr>
+    <tr>
+      <td><strong>REQ-075</strong></td>
+      <td>Every AI chat response shall include an explicit clinical safety disclaimer stating: "MedAI provides recovery guidance and does not replace professional medical diagnosis. Consult your doctor for severe symptoms."</td>
+      <td><span class="badge badge-high">HIGH</span></td>
+    </tr>
+    <tr>
+      <td><strong>REQ-076</strong></td>
+      <td>If a user expresses severe acute symptoms (e.g., crushing chest pain, suicidal ideation, uncontrollable hemorrhage), MedAI shall immediately output an emergency protocol and highlight the 108 SOS button.</td>
+      <td><span class="badge badge-high">HIGH</span></td>
+    </tr>
+    <tr>
+      <td><strong>REQ-077</strong></td>
+      <td>The chat interface shall display typing indicator animations while the model generates the response stream.</td>
+      <td><span class="badge badge-med">MEDIUM</span></td>
+    </tr>
+    <tr>
+      <td><strong>REQ-078</strong></td>
+      <td>Chat interactions shall return initial tokens within 800 milliseconds and complete generation within 3.0 seconds under standard conditions.</td>
+      <td><span class="badge badge-high">HIGH</span></td>
+    </tr>
+    <tr>
+      <td><strong>REQ-079</strong></td>
+      <td>The system shall gracefully handle Groq API connection failures by displaying a friendly offline message and directing the patient to emergency helplines.</td>
+      <td><span class="badge badge-high">HIGH</span></td>
+    </tr>
+    <tr>
+      <td><strong>REQ-080</strong></td>
+      <td>Chat conversations shall be persisted in the database linked to the patient ID, allowing clinicians to review patient concerns during follow-ups.</td>
+      <td><span class="badge badge-med">MEDIUM</span></td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- SECTION 5: NONFUNCTIONAL REQUIREMENTS -->
+<h1>5. Non-Functional Requirements</h1>
+
+<h2>5.1 Performance Requirements</h2>
+<table>
+  <thead>
+    <tr>
+      <th style="width: 25%;">Metric / Parameter</th>
+      <th style="width: 45%;">Performance Benchmark Specification</th>
+      <th>Rationale & Impact</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Page Initial Load Time</strong></td>
+      <td>Initial dashboard load and render shall complete within <strong>&le; 2.5 seconds</strong> on a 10 Mbps broadband connection.</td>
+      <td>Reduces cognitive strain on recovering patients experiencing fatigue.</td>
+    </tr>
+    <tr>
+      <td><strong>API Endpoint Latency</strong></td>
+      <td>Standard CRUD REST endpoints (vitals, meds, auth) shall respond in <strong>&le; 200 milliseconds</strong>.</td>
+      <td>Ensures immediate UI responsiveness during data entry.</td>
+    </tr>
+    <tr>
+      <td><strong>AI Inference Latency</strong></td>
+      <td>Document parsing and conversational LLM responses shall complete in <strong>&le; 3.5 seconds</strong>.</td>
+      <td>Maintains patient engagement during discharge document analysis.</td>
+    </tr>
+    <tr>
+      <td><strong>Concurrent User Capacity</strong></td>
+      <td>The system architecture shall sustain a minimum of <strong>250 concurrent active sessions</strong> without performance degradation.</td>
+      <td>Supports multi-hospital cohort scaling on modest cloud hardware.</td>
+    </tr>
+    <tr>
+      <td><strong>Database Query Performance</strong></td>
+      <td>Indexed telemetry queries (e.g., 7-day vital trends) shall execute in <strong>&le; 50 milliseconds</strong> in MongoDB Atlas.</td>
+      <td>Powers instantaneous rendering of multi-parameter Chart.js graphs.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>5.2 Safety Requirements</h2>
+<ul>
+  <li><strong>Clinical Disclaimer Prominence:</strong> Every screen and AI output must explicitly inform the patient that Heal From Home is an assistive monitoring tool, not a diagnostic medical device.</li>
+  <li><strong>Automated Emergency Triggering:</strong> Whenever vital metrics indicate acute decompensation (SpO2 &lt; 90%, SBP &gt; 200 mmHg, HR &gt; 140 bpm), the system must immediately trigger visual red banners and highlight the 1-Click 108 ambulance dialer.</li>
+  <li><strong>Vital-Dependent Medication Holds:</strong> The system must display clinical hold notices on sensitive drugs (e.g., beta-blockers, antihypertensives, insulin) when the patient's recorded vitals are incompatible with safe administration.</li>
+  <li><strong>Fail-Safe Emergency Operation:</strong> In the event of backend network loss, client-side cached data must maintain the emergency contact phone numbers and local hospital addresses accessible at all times.</li>
+</ul>
+
+<h2>5.3 Security Requirements</h2>
+<ul>
+  <li><strong>Data Encryption in Transit:</strong> 100% of network communications shall enforce <strong>TLS 1.3 encryption</strong> with strict HTTPS redirection and HTTP Strict Transport Security (HSTS) headers.</li>
+  <li><strong>Data Encryption at Rest:</strong> MongoDB Atlas database volumes shall utilize <strong>AES-256 encryption at rest</strong>. Sensitive patient identifiers shall be compartmentalized.</li>
+  <li><strong>Password Storage:</strong> Passwords must be hashed using bcrypt with salt rounds &ge; 10. Passwords shall never appear in application logs or error stack traces.</li>
+  <li><strong>Session Security & JWT:</strong> Authentication tokens must be signed with a cryptographically secure 256-bit secret key. Tokens expire automatically after 7 days and must be revoked upon explicit logout.</li>
+  <li><strong>HTTP Security Headers:</strong> The Express application shall implement <code>helmet</code> middleware setting Content Security Policy (CSP), X-Frame-Options: DENY, and X-Content-Type-Options: nosniff.</li>
+  <li><strong>Rate Limiting:</strong> Public authentication endpoints shall enforce rate limits of 100 requests per 15-minute window per IP to eliminate brute-force attack vectors.</li>
+</ul>
+
+<h2>5.4 Software Quality Attributes</h2>
+<table>
+  <thead>
+    <tr>
+      <th style="width: 20%;">Quality Attribute</th>
+      <th>Quantitative Quality Specification</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Availability</strong></td>
+      <td>The system shall maintain <strong>99.9% operational uptime</strong> (&lt; 43 minutes unplanned downtime per month), excluding scheduled maintenance windows.</td>
+    </tr>
+    <tr>
+      <td><strong>Reliability & Fault Tolerance</strong></td>
+      <td>All database transactions modifying patient health state shall be atomic. If third-party AI services become unreachable, the core vitals and medication logging systems shall continue operating uninterrupted without throwing fatal exceptions.</td>
+    </tr>
+    <tr>
+      <td><strong>Usability & Accessibility</strong></td>
+      <td>The UI shall comply with <strong>WCAG 2.1 Level AA</strong> standards. A newly registered post-operative patient shall be able to complete their morning vital sign logging and medication check-off within <strong>under 3 minutes</strong> without requiring assistance.</td>
+    </tr>
+    <tr>
+      <td><strong>Maintainability & Modularity</strong></td>
+      <td>Source code shall adhere to ESLint Airbnb standards for React and PEP 8 for Python utilities. Controllers, routes, and middleware shall remain decoupled with modular separation of concerns.</td>
+    </tr>
+    <tr>
+      <td><strong>Portability</strong></td>
+      <td>The backend application shall run cleanly across any standard Node.js runtime environment (Linux, macOS, Windows Server) and shall be containerizable via standard Dockerfiles without environment-specific code alterations.</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- SECTION 6: PROJECT PLAN -->
+<h1>6. Project Plan & Implementation Timeline</h1>
+
+<h2>6.1 Team Members & Governance</h2>
+<p>
+The project is executed by a dedicated three-member engineering team from the Department of Computer Science & Engineering, Medi-Caps University, under the supervision of Assistant Professor Ms. Mitushi Soni Ma'am:
+</p>
+<table>
+  <thead>
+    <tr>
+      <th>Team Member</th>
+      <th>Enrollment No.</th>
+      <th>Primary Engineering Domain</th>
+      <th>Core Architectural Ownership</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>CHAYAN JAIN</strong><br>(Team Lead)</td>
+      <td><strong>EN23CS301274</strong></td>
+      <td>Full-Stack Architecture & AI Integration</td>
+      <td>System architecture, Groq LLM pipeline integration, discharge document parsing, database schema design, and end-to-end integration.</td>
+    </tr>
+    <tr>
+      <td><strong>DAKSH SETHI</strong></td>
+      <td><strong>EN23CS301286</strong></td>
+      <td>Frontend Engineering & UI/UX</td>
+      <td>React SPA development, calming healthcare color design, interactive recovery widgets, responsive views, and Chart.js telemetry visualization.</td>
+    </tr>
+    <tr>
+      <td><strong>DAKSH MANGAL</strong></td>
+      <td><strong>EN23CS301285</strong></td>
+      <td>Backend API & Quality Assurance</td>
+      <td>Express REST API development, JWT authentication & RBAC, automated safety screening logic, database migrations, and testing.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>6.2 Division of Work Matrix</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Project Lifecycle Phase</th>
+      <th>Key Work Breakdown Tasks</th>
+      <th>Chayan Jain</th>
+      <th>Daksh Sethi</th>
+      <th>Daksh Mangal</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>1. Requirements & Research</strong></td>
+      <td>Literature review, clinical survey, hospital stakeholder interviews, IEEE 830 SRS authoring.</td>
+      <td>40% (Lead)</td>
+      <td>30%</td>
+      <td>30%</td>
+    </tr>
+    <tr>
+      <td><strong>2. Architectural Design</strong></td>
+      <td>UML modeling, database entity relationship schemas, decoupled REST API contract design.</td>
+      <td>50% (Lead)</td>
+      <td>25%</td>
+      <td>25%</td>
+    </tr>
+    <tr>
+      <td><strong>3. Frontend Development</strong></td>
+      <td>React SPA components, calming theme styling, interactive widgets, responsive layouts.</td>
+      <td>20%</td>
+      <td>60% (Lead)</td>
+      <td>20%</td>
+    </tr>
+    <tr>
+      <td><strong>4. Backend & AI Pipeline</strong></td>
+      <td>Express route handlers, Groq LLM integration, PDF extraction, drug interaction algorithms.</td>
+      <td>50% (Lead)</td>
+      <td>10%</td>
+      <td>40%</td>
+    </tr>
+    <tr>
+      <td><strong>5. Testing & Security Hardening</strong></td>
+      <td>Unit tests, JWT security validation, clinical safety checks, cross-browser validation.</td>
+      <td>30%</td>
+      <td>30%</td>
+      <td>40% (Lead)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>6.3 Time Schedule & Sprints (8-Week Roadmap)</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Sprint</th>
+      <th>Key Development Milestones & Activities</th>
+      <th>Deliverable / Verification Output</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Week 1</strong></td>
+      <td>Project initialization: setup React 18 frontend and Node.js/Express backend; configure MongoDB Atlas; author and approve formal SRS.</td>
+      <td>Working full-stack baseline repository with active GitHub CI/CD sync; approved SRS document.</td>
+    </tr>
+    <tr>
+      <td><strong>Week 2</strong></td>
+      <td>Implement Mongoose database schemas (User, Patient, HealthLog, Medication, RecoveryPlan); develop JWT authentication and RBAC middleware.</td>
+      <td>Functional authentication endpoints; secure registration, login, and password hashing verified.</td>
+    </tr>
+    <tr>
+      <td><strong>Week 3</strong></td>
+      <td>Develop patient health telemetry endpoints; implement vital sign validation, range checking, and automated Alert generation.</td>
+      <td>Vitals logging operational; abnormal vital alert generation verified with unit tests.</td>
+    </tr>
+    <tr>
+      <td><strong>Week 4</strong></td>
+      <td>Build React dashboard with calming healthcare theme; integrate Chart.js time-series vital graphs and circular Recovery Gauge.</td>
+      <td>Live responsive dashboard with dynamic vital curves and status color transitions.</td>
+    </tr>
+    <tr>
+      <td><strong>Week 5</strong></td>
+      <td>Integrate Groq LPU LLM API and <code>pdf-parse</code>; develop automated discharge summary analysis and Care Pathway generation.</td>
+      <td>Discharge Automation Modal fully operational with PDF upload and JSON extraction.</td>
+    </tr>
+    <tr>
+      <td><strong>Week 6</strong></td>
+      <td>Build pharmacological safety checker (Drug-Drug & Food-Drug interaction warnings); implement 1-Click 108 SOS emergency workflow.</td>
+      <td>Interactive safety warning cards on medications; one-click emergency dialer and clipboard triage copy.</td>
+    </tr>
+    <tr>
+      <td><strong>Week 7</strong></td>
+      <td>Develop Doctor Cohort Management portal; triage risk badge classification; tele-consultation and appointment scheduling.</td>
+      <td>Clinician view operational; multi-patient cohort monitoring and clinical note recording verified.</td>
+    </tr>
+    <tr>
+      <td><strong>Week 8</strong></td>
+      <td>End-to-end integration testing, security audit, performance benchmarking against non-functional targets, final documentation & evaluation presentation.</td>
+      <td>Production-ready demonstration build; verified zero-error build; presentation deck and demonstration script.</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- SECTION 7: APPENDIX A: GLOSSARY -->
+<h1>7. Appendix A: Comprehensive Glossary</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th style="width: 20%;">Term / Acronym</th>
+      <th>Medical & Technical Definition</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>AI / LLM</strong></td>
+      <td>Artificial Intelligence / Large Language Model. Foundational deep learning neural networks trained on vast textual datasets capable of natural language understanding and clinical reasoning.</td>
+    </tr>
+    <tr>
+      <td><strong>BP</strong></td>
+      <td>Blood Pressure. Measure of hydrostatic pressure exerted by circulating blood upon blood vessel walls; recorded as Systolic over Diastolic in mmHg.</td>
+    </tr>
+    <tr>
+      <td><strong>CABG</strong></td>
+      <td>Coronary Artery Bypass Grafting. Major cardiovascular surgical procedure diverting blood around clogged coronary arteries to restore myocardial perfusion.</td>
+    </tr>
+    <tr>
+      <td><strong>CYP3A4</strong></td>
+      <td>Cytochrome P450 3A4. Crucial liver enzyme involved in the metabolism of approximately 50% of pharmaceutical medications, including statins. Strongly inhibited by compounds in grapefruit juice.</td>
+    </tr>
+    <tr>
+      <td><strong>DAPT</strong></td>
+      <td>Dual Antiplatelet Therapy. Mandatory post-stenting pharmacological protocol combining Aspirin with a P2Y12 inhibitor (e.g., Clopidogrel) to prevent fatal stent thrombosis.</td>
+    </tr>
+    <tr>
+      <td><strong>DES</strong></td>
+      <td>Drug-Eluting Stent. Coronary endovascular scaffold coated with an antiproliferative medication (e.g., Zotarolimus, Everolimus) that slowly elutes to prevent neointimal hyperplasia and restenosis.</td>
+    </tr>
+    <tr>
+      <td><strong>EBD</strong></td>
+      <td>Evidence-Based Design. Architectural and graphical design methodology leveraging clinical psychology research to foster calming, restorative environments that reduce patient anxiety.</td>
+    </tr>
+    <tr>
+      <td><strong>EHR / EMR</strong></td>
+      <td>Electronic Health Record / Electronic Medical Record. Digital version of a patient's comprehensive medical history, operative notes, and hospital discharge summaries.</td>
+    </tr>
+    <tr>
+      <td><strong>Groq LPU</strong></td>
+      <td>Language Processing Unit. Specialized custom silicon hardware accelerator engineered by Groq specifically for high-throughput, ultra-low latency large language model inference.</td>
+    </tr>
+    <tr>
+      <td><strong>HIPAA</strong></td>
+      <td>Health Insurance Portability and Accountability Act of 1996. United States federal statutory standard establishing strict safeguards for protecting sensitive patient health information.</td>
+    </tr>
+    <tr>
+      <td><strong>JWT</strong></td>
+      <td>JSON Web Token. An open standard (RFC 7519) compact, URL-safe means of securely transmitting claims between parties as a digitally signed JSON object.</td>
+    </tr>
+    <tr>
+      <td><strong>LVEF</strong></td>
+      <td>Left Ventricular Ejection Fraction. Echocardiographic measurement of the percentage of blood pumped out of the heart's main pumping chamber with each contraction (Normal: 50%–70%).</td>
+    </tr>
+    <tr>
+      <td><strong>MVT / MVC</strong></td>
+      <td>Model-View-Template / Model-View-Controller. Software design patterns enforcing strict separation between data persistence (Model), business logic (Controller/View), and graphical rendering (Template/View).</td>
+    </tr>
+    <tr>
+      <td><strong>NSTEMI</strong></td>
+      <td>Non-ST Elevation Myocardial Infarction. Type of acute coronary syndrome characterized by partial coronary artery occlusion resulting in myocardial ischemia and biomarker elevation without ST-elevation on ECG.</td>
+    </tr>
+    <tr>
+      <td><strong>PCI / PTCA</strong></td>
+      <td>Percutaneous Coronary Intervention / Percutaneous Transluminal Coronary Angioplasty. Minimally invasive catheter-based procedure used to open clogged heart arteries using balloons and stents.</td>
+    </tr>
+    <tr>
+      <td><strong>PHI</strong></td>
+      <td>Protected Health Information. Individually identifiable health information created, stored, or transmitted by a healthcare entity regarding physical or mental health conditions or treatments.</td>
+    </tr>
+    <tr>
+      <td><strong>RBAC</strong></td>
+      <td>Role-Based Access Control. Security architecture mechanism restricting system access authorized to specific users based on their defined organizational roles (Patient, Doctor, Administrator).</td>
+    </tr>
+    <tr>
+      <td><strong>RPMS</strong></td>
+      <td>Remote Patient Management System. Digital healthcare platform enabling continuous or periodic monitoring of recovering patients outside conventional clinical settings.</td>
+    </tr>
+    <tr>
+      <td><strong>SpO2</strong></td>
+      <td>Peripheral Capillary Oxygen Saturation. Estimation of the oxygen saturation level in arterial blood expressed as a percentage, non-invasively measured via pulse oximetry (Normal: 95%–100%).</td>
+    </tr>
+    <tr>
+      <td><strong>WCAG</strong></td>
+      <td>Web Content Accessibility Guidelines. Globally recognized technical standards published by the W3C defining criteria for making web content accessible to individuals with visual, cognitive, or physical impairments.</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- SECTION 8: APPENDIX B: TBD LIST -->
+<h1>8. Appendix B: To Be Determined (TBD) List</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th style="width: 15%;">TBD Ref ID</th>
+      <th style="width: 25%;">System Component</th>
+      <th style="width: 45%;">Description of Pending Technical Item</th>
+      <th>Target Resolution Phase</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>TBD-001</strong></td>
+      <td>Hardware Telemetry Gateway</td>
+      <td>Specification and Bluetooth Low Energy (BLE) GATT profile mapping for direct zero-click synchronization with commercial Omron BP and Nonin pulse oximeters.</td>
+      <td>Version 2.0 (Post-Evaluation Roadmap)</td>
+    </tr>
+    <tr>
+      <td><strong>TBD-002</strong></td>
+      <td>Multilingual Voice Interface</td>
+      <td>Integration of low-resource Indian vernacular voice models (Hindi, Marathi, Gujarati) for illiterate or severely sight-impaired elderly rural patients.</td>
+      <td>Version 2.0 (Phase 2 Research)</td>
+    </tr>
+    <tr>
+      <td><strong>TBD-003</strong></td>
+      <td>FHIR / HL7 Ingestion Gateway</td>
+      <td>Direct API connector linking Heal From Home to hospital Electronic Health Record (EHR) databases adhering to HL7 Fast Healthcare Interoperability Resources (FHIR) specifications.</td>
+      <td>Version 2.5 (Clinical Trial Phase)</td>
+    </tr>
+    <tr>
+      <td><strong>TBD-004</strong></td>
+      <td>Automated SMS / WhatsApp Gateway</td>
+      <td>Integration with SMS aggregators (e.g., Twilio or MSG91) for cellular SMS fallback alerting in areas with intermittent mobile data connectivity.</td>
+      <td>Version 1.1 (Pre-Deployment Sprint)</td>
+    </tr>
+  </tbody>
+</table>
+
+<div style="margin-top: 40px; padding-top: 15px; border-top: 2px solid #cbd5e1; text-align: center; font-size: 9pt; color: #64748b;">
+  <strong>End of Software Requirements Specification (SRS)</strong><br>
+  Heal From Home: Intelligent Post-Discharge Care Companion &bull; Release 1.0 (Final Approved)<br>
+  Medi-Caps University, Indore &bull; Department of Computer Science & Engineering
+</div>
+
+</body>
+</html>
